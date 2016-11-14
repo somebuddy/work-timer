@@ -40,7 +40,7 @@ gulp.task('build:ts', ['build:scripts:clean'], function() {
   return gulp.src(tsFiles)
     .pipe(tsProject())
     .js
-    .pipe(gulp.dest("build/client"));
+    .pipe(gulp.dest("./build/client"));
 });
 
 gulp.task('build:js', ['build:scripts:clean'], function() {
@@ -61,7 +61,7 @@ gulp.task('build:sass', ['build:styles:clean'], function() {
 
   return gulp.src(sassFiles)
     .pipe(sass().on('error', sass.logError))
-    .pipe(gulp.dest("build/client/styles"));
+    .pipe(gulp.dest("./build/client/styles"));
 });
 
 gulp.task('build:css', ['build:styles:clean'], function() {
@@ -72,20 +72,18 @@ gulp.task('build:css', ['build:styles:clean'], function() {
 gulp.task('build:styles', ['build:styles:clean', 'build:sass', 'build:css']);
 
 // Watch tasks
-gulp.task('watch:ts', ['build:ts'], browserSync.reload);
-gulp.task('watch:js', ['build:js'], browserSync.reload);
+gulp.task('watch:scripts', ['build:scripts'], browserSync.reload);
 gulp.task('watch:templates', ['build:templates'], browserSync.reload);
-gulp.task('watch:css', ['build:css'], browserSync.reload);
-gulp.task('watch:sass', ['build:sass'], browserSync.reload);
+gulp.task('watch:styles', ['build:styles'], browserSync.reload);
 
 // Main tasks
 gulp.task("serve", ['build:templates', 'build:scripts', 'build:styles'], function() {
   browserSync.init(serveConfig);
-  gulp.watch(tsFiles, ['watch:ts']);
-  gulp.watch(jsFiles, ['watch:js']);
+  gulp.watch(tsFiles, ['watch:scripts']);
+  gulp.watch(jsFiles, ['watch:scripts']);
   gulp.watch(templateFiles, ['watch:templates']);
-  gulp.watch(sassFiles, ['watch:sass']);
-  gulp.watch(cssFiles, ['watch:css']);
+  gulp.watch(sassFiles, ['watch:styles']);
+  gulp.watch(cssFiles, ['watch:styles']);
 });
 
 gulp.task("default", ['serve']);

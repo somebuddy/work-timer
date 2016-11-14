@@ -1,0 +1,3 @@
+[submodule "imports/box-ui"]
+	path = imports/box-ui
+	url = git@gitlab.com:Somebuddy/box-ui.git
