@@ -1,8 +1,12 @@
 {
-  "name": "angular2-starter",
+  "name": "work-timer",
   "version": "0.0.1",
-  "description": "initial configuration to quick start new angular2 project with TypeScript",
+  "description": "Simple web service to track time spending",
   "main": "./build/main.js",
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.com:Somebuddy/work-timer.git"
+  },
   "scripts": {
     "test": "gulp test"
   },
