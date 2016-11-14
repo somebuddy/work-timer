@@ -1,0 +1,31 @@
+{
+  "name": "angular2-starter",
+  "version": "0.0.1",
+  "description": "initial configuration to quick start new angular2 project with TypeScript",
+  "main": "./build/main.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "author": "somebuddy",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/core-js": "^0.9.34",
+    "browser-sync": "^2.17.5",
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-sass": "^2.3.2",
+    "gulp-typescript": "^3.1.2",
+    "typescript": "^2.0.7"
+  },
+  "dependencies": {
+    "@angular/common": "^2.1.2",
+    "@angular/compiler": "^2.1.2",
+    "@angular/core": "^2.1.2",
+    "@angular/platform-browser": "^2.1.2",
+    "@angular/platform-browser-dynamic": "^2.1.2",
+    "reflect-metadata": "^0.1.8",
+    "rxjs": "5.0.0-beta.12",
+    "systemjs": "^0.19.40",
+    "zone.js": "^0.6.26"
+  }
+}

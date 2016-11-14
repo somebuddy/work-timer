@@ -1,0 +1,10 @@
+{
+	"compilerOptions": {
+		"noImplicitAny": true,
+		"target": "es5",
+		"module": "system",
+		"moduleResolution": "node",
+		"experimentalDecorators": true
+	},
+	"compileOnSave": false
+}
