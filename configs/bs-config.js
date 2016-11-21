@@ -1,3 +1,5 @@
+var historyApiFallback = require('connect-history-api-fallback');
+
 module.exports = {
   "port": 8080,
   "files": [
@@ -19,5 +21,6 @@ module.exports = {
     ]
   },
   "codeSync": true,
-  "injectChanges": true
+  "injectChanges": true,
+  middleware: [ historyApiFallback() ]
 };
