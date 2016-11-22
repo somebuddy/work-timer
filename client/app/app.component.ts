@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
   template: `
     <h1>Work timer</h1>
     <nav>
+      <a routerLink="/timer" routerLinkActive="active">Timer</a>
       <a routerLink="/about" routerLinkActive="active">About</a>
       <a routerLink="/intro" routerLinkActive="active">Intro</a>
     </nav>

@@ -5,19 +5,17 @@ import { AppRoutesModule } from './app-routes.module';
 import { AppComponent }   from './app.component';
 
 import { TimeTrackerModule } from './time-tracker/time-tracker.module';
-import { IntroPageComponent } from './intro.component';
-import { AboutPageComponent } from './about.component';
+import { AppPagesModule } from './pages/app-pages.module';
 
 @NgModule({
   imports:      [
     BrowserModule,
     AppRoutesModule,
     TimeTrackerModule,
+    AppPagesModule,
   ],
   declarations: [
-    AppComponent,
-    IntroPageComponent,
-    AboutPageComponent
+    AppComponent
   ],
   bootstrap:    [ AppComponent ]
 })
