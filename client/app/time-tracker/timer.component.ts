@@ -12,6 +12,7 @@ export class Timer {
       <div class="activity">
         <label>Current activity:</label>
         <div class="value">{{ timer.activity }}</div>
+        <input [(ngModel)]="timer.activity" placeholder="What are you doing now?">
       </div>
       <div class="time">
         <label>Current time</label>
