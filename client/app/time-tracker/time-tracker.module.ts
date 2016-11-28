@@ -5,6 +5,7 @@ import { FormsModule }   from '@angular/forms';
 import { TimeTrackerRoutesModule } from './time-tracker-routes.module';
 import { TimeTrackerComponent } from './time-tracker.component';
 import { TimerComponent } from './timer.component';
+import { ActivitiesListComponent } from './activities.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { TimerComponent } from './timer.component';
   declarations: [
     TimeTrackerComponent,
     TimerComponent,
+    ActivitiesListComponent,
   ]
 })
 export class TimeTrackerModule {};
