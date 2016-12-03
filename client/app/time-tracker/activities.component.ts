@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 
 import { Activity } from './activity.model';
@@ -26,9 +26,8 @@ const ACTIVITIES: Activity[] = [
       <ul class="content">
         <li *ngFor="let act of activities"
           class="activity"
-          [class.selected]="act === selectedActivity"
-          [class.done]="act.isDone"
-          (click)="onSelect(act)">
+          [class.selected]="act === currentActivity"
+          [class.done]="act.isDone">
           <span class="title">{{ act.title }}</span>
           <span class="time">{{ act.currentTime | date:"hh:mm:ss" }}</span>
           <button class="btn btn-start"
@@ -71,7 +70,6 @@ const ACTIVITIES: Activity[] = [
 export class ActivitiesListComponent {
   public activities = ACTIVITIES;
   public currentActivity: Activity;
-  public selectedActivity: Activity;
   private timer: any;
   private timerSub: any;
 
@@ -79,21 +77,20 @@ export class ActivitiesListComponent {
   };
 
   public ngOnInit() {
-    this.timer = Observable.timer(500, 500);
+    this.timer = Observable.interval(500);
     this.timerOn();
   };
 
   public ngOnDestroy() {
-    this.timerOff();
-  };
-
-  public onSelect(activity: Activity): void {
-    this.selectedActivity = activity;
+    if (!this.timerSub.closed) {
+      this.timerSub.unsubscribe();
+    }
   };
 
   public onStart(activity: Activity): void {
     activity.start();
     this.currentActivity = activity;
+    this.timerOn();
   };
 
   public onStop(activity: Activity): void {
@@ -106,16 +103,10 @@ export class ActivitiesListComponent {
   };
 
   private timerOn() {
-    this.timerSub = this.timer.subscribe(() => {
-      if (this.currentActivity) {
+    this.timerSub = this.timer
+      .takeWhile(() => this.currentActivity)
+      .subscribe(() => {
         this.ref.markForCheck();
-      }
-    });
-  };
-
-  private timerOff() {
-    if (!this.timerSub.closed) {
-      this.timerSub.unsubscribe();
-    }
+      });
   };
 };
