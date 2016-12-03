@@ -1,23 +1,24 @@
-import { Component } from '@angular/core';
-import { Timer } from './timer.component';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
-const ACTIVITIES: Timer[] = [
-  { activity: 'Create Timer component', currentTime: 500 },
-  { activity: 'Test Timer component', currentTime: 700 },
-]
+import { Activity } from './activity.model';
+
+const ACTIVITIES: Activity[] = [
+  new Activity('Create Activity component'),
+  new Activity('Test Activity component'),
+];
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'box-activities',
   template: `
     <!-- current activity -->
     <div class="activity" *ngIf="currentActivity">
       <span>Now working on:</span>
-      <span class="title">{{ currentActivity.activity }}</span>
+      <span class="title">{{ currentActivity.title }}</span>
       <span class="time">{{ currentActivity.currentTime }}</span>
       <button class="btn btn-stop" (click)="onStop(currentActivity)">Stop</button>
       <button class="btn btn-done" (click)="onDone(currentActivity)">Done</button>
     </div>
-
     <!-- all activities -->
     <div class="activities">
       <header>Previous Activities</header>
@@ -25,12 +26,12 @@ const ACTIVITIES: Timer[] = [
         <li *ngFor="let act of activities"
           class="activity"
           [class.selected]="act === selectedActivity"
-          [class.done]="act.done"
+          [class.done]="act.isDone"
           (click)="onSelect(act)">
-          <span class="title">{{ act.activity }}</span>
+          <span class="title">{{ act.title }}</span>
           <span class="time">{{ act.currentTime }}</span>
           <button class="btn btn-start"
-            *ngIf="!act.done"
+            *ngIf="!act.isDone"
             (click)="onStart(act)">Start</button>
           <button class="btn btn-done" (click)="onDone(act)">Done</button>
         </li>
@@ -41,6 +42,8 @@ const ACTIVITIES: Timer[] = [
     .activity {
       padding: 1rem 2rem;
       margin: 1rem 0;
+      border-top: 1px solid #AAA;
+      border-bottom: 1px solid #AAA;
     }
 
     .activity > .title {
@@ -65,28 +68,25 @@ const ACTIVITIES: Timer[] = [
   `]
 })
 export class ActivitiesListComponent {
-  activities = ACTIVITIES;
-  currentActivity: Timer;
-  selectedActivity: Timer;
+  public activities = ACTIVITIES;
+  public currentActivity: Activity;
+  public selectedActivity: Activity;
 
-  onSelect(activity: Timer):void {
+  public onSelect(activity: Activity): void {
     this.selectedActivity = activity;
   };
 
-  onStart(activity: Timer): void {
+  public onStart(activity: Activity): void {
+    activity.start();
     this.currentActivity = activity;
-    activity.startedAt = new Date();
   };
 
-  onStop(activity: Timer): void {
-    activity.stoppedAt = new Date();
-    activity.currentTime = (activity.currentTime || 0) + (activity.stoppedAt - activity.startedAt);
-    this.currentActivity = undefined;
+  public onStop(activity: Activity): void {
+    activity.stop();
+    this.currentActivity = null;
   };
 
-  onDone(activity: Timer): void {
-    activity.done = true;
-    activity.doneAt = new Date();
-    console.log('Finished: ', activity);
+  public onDone(activity: Activity): void {
+    activity.done();
   };
 };
