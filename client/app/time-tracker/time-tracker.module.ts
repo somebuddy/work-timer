@@ -17,6 +17,6 @@ import { ActivitiesListComponent } from './activities.component';
     TimeTrackerComponent,
     TimerComponent,
     ActivitiesListComponent,
-  ]
+  ],
 })
 export class TimeTrackerModule {};
