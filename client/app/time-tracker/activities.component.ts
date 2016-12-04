@@ -1,13 +1,10 @@
 import { Component } from '@angular/core';
 
 import { Activity } from './activity.model';
-
-const ACTIVITIES: Activity[] = [
-  new Activity('Create Activity component'),
-  new Activity('Test Activity component'),
-];
+import { ActivityService } from './activity.service';
 
 @Component({
+  providers: [ActivityService],
   selector: 'box-activities',
   template: `
     <!-- current activity -->
@@ -26,6 +23,17 @@ const ACTIVITIES: Activity[] = [
   `,
 })
 export class ActivitiesListComponent {
-  public activities = ACTIVITIES;
+  public activities: Activity[];
   public currentActivity: Activity;
+
+  constructor(private activityService: ActivityService) {
+  };
+
+  public ngOnInit(): void {
+    this.getActivities();
+  };
+
+  private getActivities(): void {
+    this.activities = this.activityService.getActivities();
+  };
 };
