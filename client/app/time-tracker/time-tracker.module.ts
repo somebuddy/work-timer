@@ -1,11 +1,12 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule }   from '@angular/forms';
+import { NgModule }     from '@angular/core';
+import { FormsModule }  from '@angular/forms';
 
-import { TimeTrackerRoutesModule } from './time-tracker-routes.module';
-import { TimeTrackerComponent } from './time-tracker.component';
-import { TimerComponent } from './timer.component';
 import { ActivitiesListComponent } from './activities.component';
+import { TimeTrackerRoutesModule } from './time-tracker-routes.module';
+import { TimeTrackerComponent }    from './time-tracker.component';
+import { TimePipe }                from './time.pipe';
+import { TimerComponent }          from './timer.component';
 
 @NgModule({
   imports: [
@@ -14,6 +15,7 @@ import { ActivitiesListComponent } from './activities.component';
     TimeTrackerRoutesModule,
   ],
   declarations: [
+    TimePipe,
     TimeTrackerComponent,
     TimerComponent,
     ActivitiesListComponent,

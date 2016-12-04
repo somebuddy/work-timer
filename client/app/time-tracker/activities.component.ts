@@ -16,7 +16,7 @@ const ACTIVITIES: Activity[] = [
     <div class="activity" *ngIf="currentActivity">
       <span>Now working on:</span>
       <span class="title">{{ currentActivity.title }}</span>
-      <span class="time">{{ currentActivity.currentTime | date:"hh:mm:ss" }}</span>
+      <span class="time">{{ currentActivity.currentTime | time }}</span>
       <button class="btn btn-stop" (click)="onStop(currentActivity)">Stop</button>
       <button class="btn btn-done" (click)="onDone(currentActivity)">Done</button>
     </div>
@@ -29,7 +29,7 @@ const ACTIVITIES: Activity[] = [
           [class.selected]="act === currentActivity"
           [class.done]="act.isDone">
           <span class="title">{{ act.title }}</span>
-          <span class="time">{{ act.currentTime | date:"hh:mm:ss" }}</span>
+          <span class="time">{{ act.currentTime | time }}</span>
           <button class="btn btn-start"
             *ngIf="!act.isDone"
             (click)="onStart(act)">Start</button>
@@ -77,7 +77,7 @@ export class ActivitiesListComponent {
   };
 
   public ngOnInit() {
-    this.timer = Observable.interval(500);
+    this.timer = Observable.interval(100);
     this.timerOn();
   };
 
