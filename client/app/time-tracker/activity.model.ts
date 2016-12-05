@@ -50,13 +50,13 @@ type ActivityState = {
 export class Activity {
   public title: string;
   public state: ActivityState = {};
-  private doneTime: number;
+  private fixedTime: number;
   private current: ActivityRecord;
   private history: ActivityRecord[] = [];
 
   constructor(title: string) {
     this.title = title;
-    this.doneTime = 0;
+    this.fixedTime = 0;
 
     this.state[ActivityStateType.done] = new ActivityStateValue();
     this.state[ActivityStateType.deleted] = new ActivityStateValue();
@@ -64,38 +64,49 @@ export class Activity {
   }
 
   get currentTime(): number {
-    let result = this.doneTime;
+    if (this.current) {
+      return Date.now() - this.current.startedAt.valueOf();
+    }
+    return 0;
+  };
+
+  get totalTime(): number {
+    let result = this.fixedTime;
     if (this.current) {
       result += Date.now() - this.current.startedAt.valueOf();
     }
     return result;
   };
 
+  get doneTime(): number {
+    return this.fixedTime;
+  };
+
   public start(): void {
     this.pause();
     this.current = new ActivityRecord();
-  }
+  };
 
   public pause(): void {
     if (this.current) {
       const a = this.current;
       this.current = null;
       a.finishedAt = new Date();
-      this.doneTime += a.finishedAt.valueOf() - a.startedAt.valueOf();
+      this.fixedTime += a.finishedAt.valueOf() - a.startedAt.valueOf();
       this.history.push(a);
     }
-  }
+  };
 
   public stop(): void {
     this.pause();
-  }
+  };
 
   public done(): void {
     this.stop();
     this.state[ActivityStateType.done].value = true;
-  }
+  };
 
   get isDone(): boolean {
     return this.state[ActivityStateType.done].value;
-  }
+  };
 };

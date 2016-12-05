@@ -11,7 +11,8 @@ import { Activity } from './activity.model';
     <div *ngIf="activity" class="activity"
       [class.done]="activity.isDone">
       <span class="title">{{ activity.title }}</span>
-      <span class="time">{{ activity.currentTime | time }}</span>
+      <span class="time current">{{ activity.currentTime | time }}</span>
+      <span class="time total">{{ activity.totalTime | time }}</span>
       <button class="btn btn-start"
         *ngIf="!activity.isDone"
         (click)="onStart()">Start</button>
@@ -38,6 +39,10 @@ import { Activity } from './activity.model';
       display: inline-block;
       margin-right: 1rem;
       font-weight: 600;
+    }
+
+    .activity > .time.current {
+      font-size: 1.5rem;
     }
 
     .activity.selected {
