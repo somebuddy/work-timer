@@ -5,7 +5,7 @@ import { ACTIVITIES } from './mock-activities';
 
 @Injectable()
 export class ActivityService {
-  getActivities(): Activity[] {
-    return ACTIVITIES;
+  public getActivities(): Promise<Activity[]> {
+    return Promise.resolve(ACTIVITIES);
   };
 }

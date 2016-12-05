@@ -34,6 +34,8 @@ export class ActivitiesListComponent {
   };
 
   private getActivities(): void {
-    this.activities = this.activityService.getActivities();
+    this.activityService.getActivities().then((activities) => {
+      this.activities = activities;
+    });
   };
 };
