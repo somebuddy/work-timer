@@ -16,7 +16,8 @@ import { ActivityService } from './activity.service';
       <ul class="content">
         <box-activity *ngFor="let act of activities"
           [activity]="act"
-          [class.selected]="act === currentActivity">
+          [class.selected]="act === currentActivity"
+          (click)="onSelect(act)">
         </box-activity>
       </ul>
     </div>
@@ -33,9 +34,14 @@ export class ActivitiesListComponent {
     this.getActivities();
   };
 
+  public onSelect(activity: Activity): void {
+    this.currentActivity = activity;
+  };
+
   private getActivities(): void {
     this.activityService.getActivities().then((activities) => {
       this.activities = activities;
     });
   };
+
 };

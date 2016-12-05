@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, SimpleChanges } from '@angular/core';
 
 import { Observable } from 'rxjs/Rx';
 
@@ -68,6 +68,12 @@ export class ActivityComponent {
   public ngOnDestroy() {
     if (!this.subscr.closed) {
       this.subscr.unsubscribe();
+    }
+  };
+
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (this.timer && changes['activity'].currentValue) {
+      this.timerOn();
     }
   }
 
