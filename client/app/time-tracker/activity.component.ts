@@ -13,12 +13,17 @@ import { Activity } from './activity.model';
       <span class="title">{{ activity.title }}</span>
       <span class="time current">{{ activity.currentTime | time }}</span>
       <span class="time total">{{ activity.totalTime | time }}</span>
+
       <button class="btn btn-start"
-        *ngIf="!activity.isDone"
+        *ngIf="!activity.isDone && !activity.isActive"
         (click)="onStart()">Start</button>
+      <button class="btn btn-start"
+        *ngIf="!activity.isDone && activity.isActive"
+        (click)="onPause()">Pause</button>
       <button class="btn btn-stop"
-        *ngIf="!activity.isDone"
+        *ngIf="!activity.isDone && activity.isActive"
         (click)="onStop()">Stop</button>
+
       <button class="btn btn-done" (click)="onDone()">Done</button>
     </div>
   `,
@@ -66,9 +71,7 @@ export class ActivityComponent {
   };
 
   public ngOnDestroy() {
-    if (!this.subscr.closed) {
-      this.subscr.unsubscribe();
-    }
+    this.timerOff();
   };
 
   public ngOnChanges(changes: SimpleChanges): void {
@@ -82,12 +85,18 @@ export class ActivityComponent {
     this.timerOn();
   };
 
+  public onPause(): void {
+    this.activity.pause();
+  };
+
   public onStop(activity: Activity): void {
     this.activity.stop();
+    this.timerOff();
   };
 
   public onDone(activity: Activity): void {
     this.activity.done();
+    this.timerOff();
   };
 
   private timerOn() {
@@ -96,5 +105,11 @@ export class ActivityComponent {
       .subscribe(() => {
         this.ref.markForCheck();
       });
+  };
+
+  private timerOff() {
+    if (!this.subscr.closed) {
+      this.subscr.unsubscribe();
+    }
   };
 }

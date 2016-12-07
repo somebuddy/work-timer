@@ -41,7 +41,9 @@ export class ActivitiesListComponent {
   };
 
   public onSelect(activity: Activity): void {
-    this.currentActivity = activity;
+    if (activity && !activity.isDone) {
+      this.currentActivity = activity;
+    }
   };
 
   private getActivities(): void {

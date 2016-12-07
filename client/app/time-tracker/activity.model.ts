@@ -109,4 +109,8 @@ export class Activity {
   get isDone(): boolean {
     return this.state[ActivityStateType.done].value;
   };
+
+  get isActive(): boolean {
+    return !!this.current;
+  }
 };
