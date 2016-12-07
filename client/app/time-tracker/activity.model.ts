@@ -113,4 +113,8 @@ export class Activity {
   get isActive(): boolean {
     return !!this.current;
   }
+
+  get historyRecords(): ActivityRecord[] {
+    return this.history;
+  }
 };

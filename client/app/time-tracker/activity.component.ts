@@ -25,6 +25,15 @@ import { Activity } from './activity.model';
         (click)="onStop()">Stop</button>
 
       <button class="btn btn-done" (click)="onDone()">Done</button>
+      <ul class="history" *ngIf="activity.historyRecords">
+        <li *ngFor="let rec of activity.historyRecords">
+          <span class="start">{{ rec.startedAt | date:'medium'}}</span>
+          <span> - </span>
+          <span class="end">{{ rec.finishedAt | date:'medium'}}</span>
+          <span> - </span>
+          <span class="time">{{ (rec.finishedAt - rec.startedAt) | time }}</span>
+        </li>
+      </ul>
     </div>
   `,
   styles: [`
@@ -52,6 +61,12 @@ import { Activity } from './activity.model';
 
     .activity.done > .title {
       text-decoration: line-through;
+    }
+
+    .history {
+      font-size: .75em;
+      opacity: 0.6;
+      font-weight: 400;
     }
   `]
 })
