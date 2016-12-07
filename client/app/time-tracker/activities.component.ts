@@ -22,6 +22,12 @@ import { ActivityService } from './activity.service';
       </ul>
     </div>
   `,
+  styles: [`
+    box-activity.selected {
+      color: orangered;
+      font-weight: 600;
+    }
+  `],
 })
 export class ActivitiesListComponent {
   public activities: Activity[];

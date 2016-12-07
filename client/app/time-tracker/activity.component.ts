@@ -45,11 +45,6 @@ import { Activity } from './activity.model';
       font-size: 1.5rem;
     }
 
-    .activity.selected {
-      color: orangered;
-      font-weight: 600;
-    }
-
     .activity.done > .title {
       text-decoration: line-through;
     }
