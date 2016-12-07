@@ -11,8 +11,18 @@ import { ActivityService } from './activity.service';
     <h4>Now working on:</h4>
     <box-activity [activity]="currentActivity"></box-activity>
     <!-- all activities -->
+
     <div class="activities">
-      <header>Previous Activities</header>
+      <header>
+        <h3>All Activities</h3>
+      </header>
+      <div class="new-activity-form">
+        <input #activityTitle />
+        <button class="btn add"
+          (click)="add(activityTitle.value); activityTitle.value=''">
+          Add
+        </button>
+      </div>
       <ul class="content">
         <box-activity *ngFor="let act of activities"
           [activity]="act"
@@ -43,6 +53,13 @@ export class ActivitiesListComponent {
   public onSelect(activity: Activity): void {
     if (activity && !activity.isDone) {
       this.currentActivity = activity;
+    }
+  };
+
+  public add(title: string): void {
+    title = title.trim();
+    if (title) {
+      this.activities.push(new Activity(title));
     }
   };
 
