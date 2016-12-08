@@ -4,25 +4,12 @@ import { Activity } from './activity.model';
 import { ActivityService } from './activity.service';
 
 @Component({
-  providers: [ActivityService],
   selector: 'box-activities',
   template: `
-    <!-- current activity -->
-    <h4>Now working on:</h4>
-    <box-activity [activity]="currentActivity"></box-activity>
-    <!-- all activities -->
-
     <div class="activities">
       <header>
-        <h3>All Activities</h3>
+        <h3>To-do</h3>
       </header>
-      <div class="new-activity-form">
-        <input #activityTitle />
-        <button class="btn add"
-          (click)="add(activityTitle.value); activityTitle.value=''">
-          Add
-        </button>
-      </div>
       <ul class="content">
         <box-activity *ngFor="let act of activities"
           [activity]="act"
@@ -30,6 +17,13 @@ import { ActivityService } from './activity.service';
           (click)="onSelect(act)">
         </box-activity>
       </ul>
+      <div class="new-activity-form">
+        <input #activityTitle />
+        <button class="btn add"
+          (click)="add(activityTitle.value); activityTitle.value=''">
+          Add
+        </button>
+      </div>
     </div>
   `,
   styles: [`
@@ -68,5 +62,4 @@ export class ActivitiesListComponent {
       this.activities = activities;
     });
   };
-
 };

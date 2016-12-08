@@ -7,13 +7,15 @@ import { ActivityComponent } from './activity.component';
 import { TimeTrackerRoutesModule } from './time-tracker-routes.module';
 import { TimeTrackerComponent }    from './time-tracker.component';
 import { TimePipe }                from './time.pipe';
-import { TimerComponent }          from './timer.component';
+import { DashboardComponent }          from './dashboard.component';
+
+import { ActivityService } from './activity.service';
 
 @NgModule({
   declarations: [
     TimePipe,
     TimeTrackerComponent,
-    TimerComponent,
+    DashboardComponent,
     ActivitiesListComponent,
     ActivityComponent,
   ],
@@ -21,6 +23,9 @@ import { TimerComponent }          from './timer.component';
     CommonModule,
     FormsModule,
     TimeTrackerRoutesModule,
+  ],
+  providers: [
+    ActivityService
   ],
 })
 export class TimeTrackerModule {};
