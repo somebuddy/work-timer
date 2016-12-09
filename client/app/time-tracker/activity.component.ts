@@ -20,6 +20,9 @@ import { Activity } from './activity.model';
       <button class="btn btn-start"
         *ngIf="!activity.isDone && activity.isActive"
         (click)="onPause()">Pause</button>
+      <button class="btn btn-start"
+        *ngIf="!activity.isDone && activity.isActive"
+        (click)="onResume()">Resume</button>
       <button class="btn btn-stop"
         *ngIf="!activity.isDone && activity.isActive"
         (click)="onStop()">Stop</button>
@@ -31,7 +34,7 @@ import { Activity } from './activity.model';
           <span> - </span>
           <span class="end">{{ rec.finishedAt | date:'medium'}}</span>
           <span> - </span>
-          <span class="time">{{ (rec.finishedAt - rec.startedAt) | time }}</span>
+          <span class="time">{{ (rec.totalTime) | time }}</span>
         </li>
       </ul>
     </div>
@@ -102,6 +105,10 @@ export class ActivityComponent {
 
   public onPause(): void {
     this.activity.pause();
+  };
+
+  public onResume(): void {
+    this.activity.start();
   };
 
   public onStop(activity: Activity): void {
