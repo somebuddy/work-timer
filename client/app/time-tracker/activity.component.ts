@@ -18,10 +18,10 @@ import { Activity } from './activity.model';
         *ngIf="!activity.isDone && !activity.isActive"
         (click)="onStart()">Start</button>
       <button class="btn btn-start"
-        *ngIf="!activity.isDone && activity.isActive"
+        *ngIf="!activity.isDone && activity.isRunning"
         (click)="onPause()">Pause</button>
       <button class="btn btn-start"
-        *ngIf="!activity.isDone && activity.isActive"
+        *ngIf="!activity.isDone && activity.isActive && !activity.isRunning"
         (click)="onResume()">Resume</button>
       <button class="btn btn-stop"
         *ngIf="!activity.isDone && activity.isActive"

@@ -44,6 +44,10 @@ export class ActivityRecord extends TimeInterval {
   get currentTime(): number {
     return this._current? this._current.totalTime : 0;
   };
+
+  get isActive(): boolean {
+    return !!this._current;
+  }
 };
 
 export enum ActivityStateType {
@@ -147,6 +151,10 @@ export class Activity {
   get isActive(): boolean {
     return !!this.current;
   };
+
+  get isRunning(): boolean {
+    return this.isActive && this.current.isActive;
+  }
 
   get historyRecords(): ActivityRecord[] {
     return this._history;
