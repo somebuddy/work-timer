@@ -32,6 +32,8 @@ import { Activity } from './activity.model';
           <span class="end">{{ rec.finishedAt | date:'medium'}}</span>
           <span> - </span>
           <span class="time">{{ (rec.totalTime) | time }}</span>
+          <span> - </span>
+          <span class="efficiency">{{ rec.efficiency | percent }}</span>
         </li>
       </ul>
     </div>

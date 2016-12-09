@@ -1,8 +1,8 @@
 export class TimeInterval {
   public isUseful: boolean = true;
   public comment: string;
-  private _startedAt: Date;
-  private _finishedAt: Date;
+  protected _startedAt: Date;
+  protected _finishedAt: Date;
 
   constructor(start: Date = null, end?: Date) {
     this._startedAt = start;
@@ -18,7 +18,8 @@ export class TimeInterval {
   }
 
   get totalTime(): number {
-    return (this._finishedAt ? this._finishedAt.valueOf() : Date.now()) - this._startedAt.valueOf();
+    return (this._finishedAt ? this._finishedAt.valueOf() : Date.now())
+      - (this._startedAt ? this._startedAt.valueOf() : Date.now());
   }
 
   public start() {

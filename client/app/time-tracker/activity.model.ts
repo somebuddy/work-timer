@@ -48,6 +48,13 @@ export class ActivityRecord extends TimeInterval {
   get isActive(): boolean {
     return !!this._current;
   }
+
+  get efficiency(): number {
+    let start = this._startedAt ? this._startedAt.valueOf() : Date.now();
+    let end = this._finishedAt? this._finishedAt.valueOf() : Date.now();
+    let runtime = end - start;
+    return runtime > 0? this.totalTime / runtime : 0;
+  }
 };
 
 export enum ActivityStateType {
