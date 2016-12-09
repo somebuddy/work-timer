@@ -15,14 +15,11 @@ import { Activity } from './activity.model';
       <span class="time total">{{ activity.totalTime | time }}</span>
 
       <button class="btn btn-start"
-        *ngIf="!activity.isDone && !activity.isActive"
+        *ngIf="!activity.isDone && !activity.isRunning"
         (click)="onStart()">Start</button>
       <button class="btn btn-start"
         *ngIf="!activity.isDone && activity.isRunning"
         (click)="onPause()">Pause</button>
-      <button class="btn btn-start"
-        *ngIf="!activity.isDone && activity.isActive && !activity.isRunning"
-        (click)="onResume()">Resume</button>
       <button class="btn btn-stop"
         *ngIf="!activity.isDone && activity.isActive"
         (click)="onStop()">Stop</button>
@@ -107,10 +104,6 @@ export class ActivityComponent {
     this.activity.pause();
   };
 
-  public onResume(): void {
-    this.activity.start();
-  };
-
   public onStop(activity: Activity): void {
     this.activity.stop();
     this.timerOff();
@@ -122,11 +115,13 @@ export class ActivityComponent {
   };
 
   private timerOn() {
-    this.subscr = this.timer
+    if (!this.subscr || this.subscr.closed) {
+      this.subscr = this.timer
       .takeWhile(() => this.activity)
       .subscribe(() => {
         this.ref.markForCheck();
       });
+    }
   };
 
   private timerOff() {
