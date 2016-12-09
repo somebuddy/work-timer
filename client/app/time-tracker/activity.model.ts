@@ -3,6 +3,7 @@ import { TimeInterval } from './time-interval.model';
 export class ActivityRecord extends TimeInterval {
   private _current: TimeInterval;
   private _history: TimeInterval[] = [];
+  private _fixedTime: number = 0;
 
   constructor(start: Date = new Date(), end?: Date) {
     super(start, end);
@@ -19,6 +20,7 @@ export class ActivityRecord extends TimeInterval {
     if (this._current) {
       this._current.stop();
       this._history.push(this._current);
+      this._fixedTime = this._history.reduce((s, i) => s + (i.isUseful? i.totalTime : 0), 0);
       this._current = null;
     }
   };
@@ -36,8 +38,7 @@ export class ActivityRecord extends TimeInterval {
   };
 
   get totalTime(): number {
-    let time = this._history.reduce((s, i) => s + (i.isUseful? i.totalTime : 0), 0);
-    return time + this.currentTime;
+    return this._fixedTime + this.currentTime;
   };
 
   get currentTime(): number {
@@ -86,13 +87,12 @@ type ActivityState = {
 export class Activity {
   public title: string;
   public state: ActivityState = {};
-  private fixedTime: number;
+  private fixedTime: number = 0;
   private current: ActivityRecord;
-  private history: ActivityRecord[] = [];
+  private _history: ActivityRecord[] = [];
 
   constructor(title: string) {
     this.title = title;
-    this.fixedTime = 0;
 
     this.state[ActivityStateType.done] = new ActivityStateValue();
     this.state[ActivityStateType.deleted] = new ActivityStateValue();
@@ -129,8 +129,8 @@ export class Activity {
   public stop(): void {
     if (this.current) {
       this.current.stop();
-      this.fixedTime += this.current.totalTime;
-      this.history.push(this.current);
+      this._history.push(this.current);
+      this.fixedTime = this._history.reduce((s, i) => s + (i.isUseful? i.totalTime : 0), 0);
       this.current = null;
     }
   };
@@ -149,6 +149,6 @@ export class Activity {
   };
 
   get historyRecords(): ActivityRecord[] {
-    return this.history;
+    return this._history;
   };
 };
