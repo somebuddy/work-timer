@@ -20,6 +20,11 @@ import { Activity } from './activity.model';
       </span>
       <span class="time total">{{ activity.totalTime | time }}</span>
 
+      <label *ngIf="activity.currentRecord">
+        Now working on:
+        <input [(ngModel)]="activity.currentRecord.comment">
+      </label>
+
       <button class="btn btn-start"
         *ngIf="!activity.isDone && !activity.isRunning"
         (click)="onStart()">Start</button>

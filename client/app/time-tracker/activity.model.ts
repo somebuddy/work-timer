@@ -171,6 +171,10 @@ export class Activity {
     return this._history;
   };
 
+  get currentRecord(): ActivityRecord {
+    return this.current;
+  }
+
   get currentIntervals(): TimeInterval[] {
     return this.current? this.current.history : [];
   };

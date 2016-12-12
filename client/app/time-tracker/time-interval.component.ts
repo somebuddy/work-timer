@@ -12,6 +12,10 @@ import { TimeInterval } from './time-interval.model';
       <span> - </span>
       <span class="time">{{ (record.totalTime) | time }}</span>
       <span> - </span>
+      <span class="comment">
+        <input type="text" [(ngModel)]="record.comment">
+      </span>
+      <span> - </span>
       <span class="efficiency">{{ record.efficiency | percent }}</span>
       <label>
         <input type="checkbox" [(ngModel)]="record.isUseful" />
