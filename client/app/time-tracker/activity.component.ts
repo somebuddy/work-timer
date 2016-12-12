@@ -25,8 +25,17 @@ import { Activity } from './activity.model';
         (click)="onStop()">Stop</button>
 
       <button class="btn btn-done" (click)="onDone()">Done</button>
-      <ul class="history" *ngIf="activity.historyRecords">
-        <li *ngFor="let rec of activity.historyRecords">
+
+      <button class="btn btn-show-history"
+        *ngIf="activity.historyRecords.length && !historyDisplayed"
+        (click)="toggleHistory()">Show history</button>
+
+      <button class="btn btn-hide-history"
+        *ngIf="activity.historyRecords.length && historyDisplayed"
+        (click)="toggleHistory()">Hide history</button>
+
+      <div class="history" *ngIf="activity.historyRecords && historyDisplayed">
+        <div *ngFor="let rec of activity.historyRecords">
           <span class="start">{{ rec.startedAt | date:'medium'}}</span>
           <span> - </span>
           <span class="end">{{ rec.finishedAt | date:'medium'}}</span>
@@ -34,8 +43,8 @@ import { Activity } from './activity.model';
           <span class="time">{{ (rec.totalTime) | time }}</span>
           <span> - </span>
           <span class="efficiency">{{ rec.efficiency | percent }}</span>
-        </li>
-      </ul>
+        </div>
+      </div>
     </div>
   `,
   styles: [`
@@ -76,6 +85,8 @@ export class ActivityComponent {
   @Input()
   public activity: Activity;
 
+  public historyDisplayed: boolean = false;
+
   private timer: any;
   private subscr: any;
 
@@ -115,6 +126,10 @@ export class ActivityComponent {
     this.activity.done();
     this.timerOff();
   };
+
+  public toggleHistory() {
+    this.historyDisplayed = !this.historyDisplayed;
+  }
 
   private timerOn() {
     if (!this.subscr || this.subscr.closed) {
