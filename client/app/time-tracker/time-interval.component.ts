@@ -13,6 +13,10 @@ import { TimeInterval } from './time-interval.model';
       <span class="time">{{ (record.totalTime) | time }}</span>
       <span> - </span>
       <span class="efficiency">{{ record.efficiency | percent }}</span>
+      <label>
+        <input type="checkbox" [(ngModel)]="record.isUseful" />
+        useful time
+      </label>
       <span style="color:red; font-weight: 900"
         *ngIf="record.isDeleted">
         (deleted:
