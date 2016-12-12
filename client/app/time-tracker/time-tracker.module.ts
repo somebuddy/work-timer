@@ -4,7 +4,7 @@ import { FormsModule }  from '@angular/forms';
 
 import { ActivitiesListComponent } from './activities.component';
 import { ActivityComponent } from './activity.component';
-import { ActivitySessionComponent } from './activity-session.component';
+import { TimeIntervalComponent } from './time-interval.component';
 import { TimeTrackerRoutesModule } from './time-tracker-routes.module';
 import { TimeTrackerComponent }    from './time-tracker.component';
 import { TimePipe }                from './time.pipe';
@@ -19,7 +19,7 @@ import { ActivityService } from './activity.service';
     DashboardComponent,
     ActivitiesListComponent,
     ActivityComponent,
-    ActivitySessionComponent,
+    TimeIntervalComponent,
   ],
   imports: [
     CommonModule,

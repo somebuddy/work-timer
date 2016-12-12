@@ -35,7 +35,7 @@ import { Activity } from './activity.model';
         (click)="toggleHistory()">Hide history</button>
 
       <div class="history" *ngIf="activity.historyRecords && historyDisplayed">
-        <activity-session *ngFor="let record of activity.historyRecords" [record]="record"></activity-session>
+        <time-interval *ngFor="let record of activity.historyRecords" [record]="record"></time-interval>
       </div>
     </div>
   `,

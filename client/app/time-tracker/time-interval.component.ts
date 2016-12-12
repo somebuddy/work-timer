@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
 
-import { ActivityRecord } from './activity.model';
+import { TimeInterval } from './time-interval.model';
 
 @Component({
-  selector: 'activity-session',
+  selector: 'time-interval',
   template: `
     <div *ngIf="record">
       <span class="start">{{ record.startedAt | date:'medium'}}</span>
@@ -30,9 +30,9 @@ import { ActivityRecord } from './activity.model';
   styles: [`
   `],
 })
-export class ActivitySessionComponent {
+export class TimeIntervalComponent {
   @Input()
-  public record: ActivityRecord;
+  public record: TimeInterval;
 
   public deleteRecord() {
     this.record.delete();
