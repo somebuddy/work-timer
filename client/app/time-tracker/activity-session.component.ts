@@ -13,6 +13,18 @@ import { ActivityRecord } from './activity.model';
       <span class="time">{{ (record.totalTime) | time }}</span>
       <span> - </span>
       <span class="efficiency">{{ record.efficiency | percent }}</span>
+      <span style="color:red; font-weight: 900"
+        *ngIf="record.isDeleted">
+        (deleted:
+          <button style="color: red"
+            (click)="restoreRecord()">restore</button>
+        )
+      </span>
+      <button class="btn delete"
+        *ngIf="!record.isDeleted"
+        (click)="deleteRecord()">
+        Delete
+      </button>
     </div>
   `,
   styles: [`
@@ -21,4 +33,12 @@ import { ActivityRecord } from './activity.model';
 export class ActivitySessionComponent {
   @Input()
   public record: ActivityRecord;
+
+  public deleteRecord() {
+    this.record.delete();
+  };
+
+  public restoreRecord() {
+    this.record.restore();
+  }
 };

@@ -20,7 +20,7 @@ export class ActivityRecord extends TimeInterval {
     if (this._current) {
       this._current.stop();
       this._history.push(this._current);
-      this._fixedTime = this._history.reduce((s, i) => s + (i.isUseful? i.totalTime : 0), 0);
+      this._fixedTime = this._history.reduce((s, i) => s + (i.isUseful && !i.isDeleted? i.totalTime : 0), 0);
       this._current = null;
     }
   };
@@ -141,7 +141,7 @@ export class Activity {
     if (this.current) {
       this.current.stop();
       this._history.push(this.current);
-      this.fixedTime = this._history.reduce((s, i) => s + (i.isUseful? i.totalTime : 0), 0);
+      this.fixedTime = this._history.reduce((s, i) => s + (i.isUseful && !i.isDeleted? i.totalTime : 0), 0);
       this.current = null;
     }
   };

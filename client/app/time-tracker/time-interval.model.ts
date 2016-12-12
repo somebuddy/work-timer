@@ -3,6 +3,7 @@ export class TimeInterval {
   public comment: string;
   protected _startedAt: Date;
   protected _finishedAt: Date;
+  private deletedAt: Date;
 
   constructor(start: Date = null, end?: Date) {
     this._startedAt = start;
@@ -28,5 +29,17 @@ export class TimeInterval {
 
   public stop() {
     this._finishedAt = new Date();
+  }
+
+  public delete() {
+    this.deletedAt = new Date();
+  };
+
+  public restore() {
+    this.deletedAt = null;
+  };
+
+  get isDeleted() {
+    return !!this.deletedAt;
   }
 };
