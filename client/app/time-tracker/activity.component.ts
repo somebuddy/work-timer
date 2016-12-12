@@ -35,15 +35,7 @@ import { Activity } from './activity.model';
         (click)="toggleHistory()">Hide history</button>
 
       <div class="history" *ngIf="activity.historyRecords && historyDisplayed">
-        <div *ngFor="let rec of activity.historyRecords">
-          <span class="start">{{ rec.startedAt | date:'medium'}}</span>
-          <span> - </span>
-          <span class="end">{{ rec.finishedAt | date:'medium'}}</span>
-          <span> - </span>
-          <span class="time">{{ (rec.totalTime) | time }}</span>
-          <span> - </span>
-          <span class="efficiency">{{ rec.efficiency | percent }}</span>
-        </div>
+        <activity-session *ngFor="let record of activity.historyRecords" [record]="record"></activity-session>
       </div>
     </div>
   `,
