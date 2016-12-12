@@ -11,7 +11,13 @@ import { Activity } from './activity.model';
     <div *ngIf="activity" class="activity"
       [class.done]="activity.isDone">
       <span class="title">{{ activity.title }}</span>
-      <span class="time current">{{ activity.currentTime | time }}</span>
+      <span class="time current">
+        {{ activity.currentTime | time }}
+        <a *ngIf="activity.isActive"
+          (click)="toggleCurrentDetails()">
+          ({{ activity.currentIntervals.length }} intervals)
+        </a>
+      </span>
       <span class="time total">{{ activity.totalTime | time }}</span>
 
       <button class="btn btn-start"
@@ -35,7 +41,13 @@ import { Activity } from './activity.model';
         (click)="toggleHistory()">Hide history</button>
 
       <div class="history" *ngIf="activity.historyRecords && historyDisplayed">
+        <header>Previous records</header>
         <time-interval *ngFor="let record of activity.historyRecords" [record]="record"></time-interval>
+      </div>
+
+      <div class="history" *ngIf="activity.currentIntervals && currentDetailsVisible">
+        <header>Current Intervals</header>
+        <time-interval *ngFor="let record of activity.currentIntervals" [record]="record"></time-interval>
       </div>
     </div>
   `,
@@ -78,6 +90,7 @@ export class ActivityComponent {
   public activity: Activity;
 
   public historyDisplayed: boolean = false;
+  public currentDetailsVisible: boolean = false;
 
   private timer: any;
   private subscr: any;
@@ -121,6 +134,10 @@ export class ActivityComponent {
 
   public toggleHistory() {
     this.historyDisplayed = !this.historyDisplayed;
+  };
+
+  public toggleCurrentDetails() {
+    this.currentDetailsVisible = !this.currentDetailsVisible;
   }
 
   private timerOn() {

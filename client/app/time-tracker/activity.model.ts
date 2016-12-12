@@ -55,6 +55,10 @@ export class ActivityRecord extends TimeInterval {
     let runtime = end - start;
     return runtime > 0? this.totalTime / runtime : 0;
   }
+
+  get history(): TimeInterval[] {
+    return this._history;
+  };
 };
 
 export enum ActivityStateType {
@@ -165,5 +169,9 @@ export class Activity {
 
   get historyRecords(): ActivityRecord[] {
     return this._history;
+  };
+
+  get currentIntervals(): TimeInterval[] {
+    return this.current? this.current.history : [];
   };
 };
