@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, SimpleCha
 
 import { Observable } from 'rxjs/Rx';
 
-import { Activity } from './activity.model';
+import { Activity, ActivityRecord } from './activity.model';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -48,6 +48,31 @@ import { Activity } from './activity.model';
       <div class="history" *ngIf="activity.historyRecords && historyDisplayed">
         <header>Previous records</header>
         <time-interval *ngFor="let record of activity.historyRecords" [record]="record"></time-interval>
+      </div>
+      <div>
+        <button (click)="showAddRecordForm()">Add previous record</button>
+        <form *ngIf="addRecordFormVisible" (ngSubmit)="onSubmit()" #newRecordForm="ngForm">
+          <div>
+            <label>Started at:</label>
+            <input type="datetime-local" [(ngModel)]="newRecord.startedAt" name="start"/>
+            {{ startedAt }}
+          </div>
+          <div>
+            <label>Finished at:</label>
+            <input type="datetime-local" [(ngModel)]="newRecord.finishedAt" name="finish"/>
+          </div>
+          <div>
+            <label>Comment:</label>
+            <input type="text" [(ngModel)]="newRecord.comment" name="comment"/>
+          </div>
+
+          <label>
+            <input type="checkbox" [(ngModel)]="newRecord.isUseful" name="isUserful"/>
+            Useful activity
+          </label>
+          <br>
+          <button type="submit">Save</button>
+        </form>
       </div>
 
       <div class="history" *ngIf="activity.currentIntervals && currentDetailsVisible">
@@ -96,6 +121,9 @@ export class ActivityComponent {
 
   public historyDisplayed: boolean = false;
   public currentDetailsVisible: boolean = false;
+  public addRecordFormVisible: boolean = false;
+
+  public newRecord: ActivityRecord;
 
   private timer: any;
   private subscr: any;
@@ -143,6 +171,17 @@ export class ActivityComponent {
 
   public toggleCurrentDetails() {
     this.currentDetailsVisible = !this.currentDetailsVisible;
+  };
+
+  public showAddRecordForm() {
+    this.addRecordFormVisible = true;
+    this.newRecord = new ActivityRecord();
+  };
+
+  public onSubmit() {
+    this.newRecord.startedAt = new Date(this.newRecord.startedAt);
+    this.newRecord.finishedAt = new Date(this.newRecord.finishedAt);
+    this.activity.historyRecords.push(this.newRecord);
   }
 
   private timerOn() {

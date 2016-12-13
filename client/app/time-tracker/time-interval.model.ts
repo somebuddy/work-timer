@@ -14,9 +14,17 @@ export class TimeInterval {
     return this._startedAt;
   }
 
+  set startedAt(start: Date) {
+    this._startedAt = start;
+  };
+
   get finishedAt(): Date {
     return this._finishedAt;
-  }
+  };
+
+  set finishedAt(end: Date) {
+    this._finishedAt = end;
+  };
 
   get totalTime(): number {
     return (this._finishedAt ? this._finishedAt.valueOf() : Date.now())
