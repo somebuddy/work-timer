@@ -6,6 +6,7 @@ import { TimeIntervalComponent } from './time-interval/time-interval.component';
 
 import { ActivityComponent } from './activity/activity.component';
 import { ActivityService } from './activity/activity.service';
+import { ActivityRecordFormComponent } from './activity/activity-record-form.component';
 
 import { TimePipe }                from './shared/time.pipe';
 
@@ -24,6 +25,7 @@ import { TimeTrackerComponent }    from './time-tracker.component';
     ActivitiesListComponent,
     ActivityComponent,
     TimeIntervalComponent,
+    ActivityRecordFormComponent,
   ],
   imports: [
     CommonModule,

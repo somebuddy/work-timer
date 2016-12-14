@@ -25,60 +25,39 @@ import { Activity, ActivityRecord } from './activity.model';
         <input [(ngModel)]="activity.currentRecord.comment">
       </label>
 
-      <button class="btn btn-start"
-        *ngIf="!activity.isDone && !activity.isRunning"
-        (click)="onStart()">Start</button>
-      <button class="btn btn-start"
-        *ngIf="!activity.isDone && activity.isRunning"
-        (click)="onPause()">Pause</button>
-      <button class="btn btn-stop"
-        *ngIf="!activity.isDone && activity.isActive"
-        (click)="onStop()">Stop</button>
+      <div class="toolbar">
+        <button class="btn btn-start"
+          *ngIf="!activity.isDone && !activity.isRunning"
+          (click)="onStart()">Start</button>
+        <button class="btn btn-start"
+          *ngIf="!activity.isDone && activity.isRunning"
+          (click)="onPause()">Pause</button>
+        <button class="btn btn-stop"
+          *ngIf="!activity.isDone && activity.isActive"
+          (click)="onStop()">Stop</button>
+        <button class="btn btn-done"
+          (click)="onDone()">Done</button>
+        <button class="btn btn-history"
+          *ngIf="activity.historyRecords.length"
+          (click)="toggleHistory()">{{ historyDisplayed? 'Hide' : 'Show' }} history</button>
+        <button class="btn btn-add-record"
+          (click)="toggleAddRecordForm()">Add previous record</button>
+      </div>
 
-      <button class="btn btn-done" (click)="onDone()">Done</button>
-
-      <button class="btn btn-show-history"
-        *ngIf="activity.historyRecords.length && !historyDisplayed"
-        (click)="toggleHistory()">Show history</button>
-
-      <button class="btn btn-hide-history"
-        *ngIf="activity.historyRecords.length && historyDisplayed"
-        (click)="toggleHistory()">Hide history</button>
-
-      <div class="history" *ngIf="activity.historyRecords && historyDisplayed">
+      <section class="history" *ngIf="activity.historyRecords && historyDisplayed">
         <header>Previous records</header>
         <time-interval *ngFor="let record of activity.historyRecords" [record]="record"></time-interval>
-      </div>
-      <div>
-        <button (click)="showAddRecordForm()">Add previous record</button>
-        <form *ngIf="addRecordFormVisible" (ngSubmit)="onSubmit()" #newRecordForm="ngForm">
-          <div>
-            <label>Started at:</label>
-            <input type="datetime-local" [(ngModel)]="newRecord.startedAt" name="start"/>
-            {{ startedAt }}
-          </div>
-          <div>
-            <label>Finished at:</label>
-            <input type="datetime-local" [(ngModel)]="newRecord.finishedAt" name="finish"/>
-          </div>
-          <div>
-            <label>Comment:</label>
-            <input type="text" [(ngModel)]="newRecord.comment" name="comment"/>
-          </div>
+      </section>
 
-          <label>
-            <input type="checkbox" [(ngModel)]="newRecord.isUseful" name="isUserful"/>
-            Useful activity
-          </label>
-          <br>
-          <button type="submit">Save</button>
-        </form>
-      </div>
+      <section class="add-record" *ngIf="addRecordFormVisible">
+        <header>Add previous time interval</header>
+        <activity-record-form (onCreated)="addNewRecord($event)"></activity-record-form>
+      </section>
 
-      <div class="history" *ngIf="activity.currentIntervals && currentDetailsVisible">
+      <section class="history" *ngIf="activity.currentIntervals && currentDetailsVisible">
         <header>Current Intervals</header>
         <time-interval *ngFor="let record of activity.currentIntervals" [record]="record"></time-interval>
-      </div>
+      </section>
     </div>
   `,
   styles: [`
@@ -122,8 +101,6 @@ export class ActivityComponent {
   public historyDisplayed: boolean = false;
   public currentDetailsVisible: boolean = false;
   public addRecordFormVisible: boolean = false;
-
-  public newRecord: ActivityRecord;
 
   private timer: any;
   private subscr: any;
@@ -173,16 +150,13 @@ export class ActivityComponent {
     this.currentDetailsVisible = !this.currentDetailsVisible;
   };
 
-  public showAddRecordForm() {
-    this.addRecordFormVisible = true;
-    this.newRecord = new ActivityRecord();
+  public toggleAddRecordForm() {
+    this.addRecordFormVisible = !this.addRecordFormVisible;
   };
 
-  public onSubmit() {
-    this.newRecord.startedAt = new Date(this.newRecord.startedAt);
-    this.newRecord.finishedAt = new Date(this.newRecord.finishedAt);
-    this.activity.historyRecords.push(this.newRecord);
-  }
+  public addNewRecord(record: ActivityRecord) {
+    this.activity.historyRecords.push(record);
+  };
 
   private timerOn() {
     if (!this.subscr || this.subscr.closed) {
