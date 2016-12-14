@@ -1,4 +1,4 @@
-import { TimeInterval } from './time-interval.model';
+import { TimeInterval } from '../time-interval/time-interval.model';
 
 export class ActivityRecord extends TimeInterval {
   private _current: TimeInterval;

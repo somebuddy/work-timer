@@ -2,15 +2,19 @@ import { CommonModule } from '@angular/common';
 import { NgModule }     from '@angular/core';
 import { FormsModule }  from '@angular/forms';
 
-import { ActivitiesListComponent } from './activities.component';
-import { ActivityComponent } from './activity.component';
-import { TimeIntervalComponent } from './time-interval.component';
+import { TimeIntervalComponent } from './time-interval/time-interval.component';
+
+import { ActivityComponent } from './activity/activity.component';
+import { ActivityService } from './activity/activity.service';
+
+import { TimePipe }                from './shared/time.pipe';
+
+import { ActivitiesListComponent } from './activity-list/activities.component';
+import { DashboardComponent }          from './dashboard/dashboard.component';
+
 import { TimeTrackerRoutesModule } from './time-tracker-routes.module';
 import { TimeTrackerComponent }    from './time-tracker.component';
-import { TimePipe }                from './time.pipe';
-import { DashboardComponent }          from './dashboard.component';
 
-import { ActivityService } from './activity.service';
 
 @NgModule({
   declarations: [

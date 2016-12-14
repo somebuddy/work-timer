@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
-import { Activity } from './activity.model';
-import { ActivityService } from './activity.service';
+import { Activity } from '../activity/activity.model';
+import { ActivityService } from '../activity/activity.service';
 
 @Component({
   selector: 'box-activities-dashboard',
