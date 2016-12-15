@@ -12,7 +12,12 @@ var excluded_files = [
 
 var templateFiles = ['./client/**/*.html'].concat(excluded_files);
 var tsFiles = ['./client/**/*.ts'].concat(excluded_files);
-var jsFiles = ['./client/**/*.js'].concat(excluded_files);
+
+var jsFiles = [
+  './systemjs.config.js',
+  './client/**/*.js'
+].concat(excluded_files);
+
 var sassFiles = ['./styles/**/*.sass', './styles/**/*.scss'].concat(excluded_files);
 var cssFiles = ['./styles/**/*.css'].concat(excluded_files);
 
@@ -84,6 +89,16 @@ gulp.task("serve", ['build:templates', 'build:scripts', 'build:styles'], functio
   gulp.watch(templateFiles, ['watch:templates']);
   gulp.watch(sassFiles, ['watch:styles']);
   gulp.watch(cssFiles, ['watch:styles']);
+});
+
+// Tests
+var Server = require('karma').Server;
+
+gulp.task("test", ['build:templates', 'build:scripts', 'build:styles'], function(done) {
+  new Server({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: true,
+  }, done).start();
 });
 
 gulp.task("default", ['serve']);
