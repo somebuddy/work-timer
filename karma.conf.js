@@ -9,7 +9,9 @@ module.exports = function(config) {
       require('karma-jasmine'),
       require('karma-chrome-launcher'),
       require('karma-firefox-launcher'),
-      require('karma-jasmine-html-reporter')
+      require('karma-jasmine-html-reporter'),
+      require('karma-spec-reporter'),
+      require('karma-coverage'),
     ],
     client: {
       builtPaths: [appBase],
@@ -62,8 +64,25 @@ module.exports = function(config) {
       { pattern: appBase + '**/*.js.map', included: false, watched: false },
     ],
     exclude: [],
-    preprocessors: {},
-    reporters: ['progress', 'kjhtml'],
+    preprocessors: {
+      './build/client/app/**/!(*spec).js': ['coverage']
+    },
+    reporters: ['kjhtml', 'spec', 'coverage'],
+
+    coverageReporter: {
+      reporters: [
+        { type: 'json', dir: 'build/coverage/', subdir: '.', file: 'coverage-final.json' },
+      ]
+    },
+
+    specReporter: {
+      maxLogLines: 5,
+      suppressErrorSummary: true,
+      suppressFailed: false,
+      suppressPassed: false,
+      suppressSkipped: true,
+      showSpecTiming: false
+    },
 
     port: 9876,
     colors: true,

@@ -42,11 +42,15 @@ gulp.task('build:scripts:clean', function() {
 
 gulp.task('build:ts', ['build:scripts:clean'], function() {
   var ts = require("gulp-typescript");
+  var sourcemaps = require('gulp-sourcemaps');
+
   var tsProject = ts.createProject("tsconfig.json");
 
   return gulp.src(tsFiles)
+    .pipe(sourcemaps.init())
     .pipe(tsProject())
     .js
+    .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest("./build/client"));
 });
 
@@ -103,5 +107,16 @@ gulp.task("serve", ['build:templates', 'build:scripts', 'build:styles', 'test:sc
 
 // Tests
 gulp.task("test", ['build:templates', 'build:scripts', 'build:styles', 'test:scripts']);
+gulp.task("coverage", ['test'], function() {
+  var remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
+
+  return gulp.src('build/coverage/coverage-final.json')
+    .pipe(remapIstanbul({
+      reports: {
+          'json': './build/coverage/coverage.json',
+          'html': './build/coverage/'
+      }
+    }));
+});
 
 gulp.task("default", ['serve']);

@@ -11,8 +11,6 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000;
 var builtPaths = (__karma__.config.builtPaths || ['app/'])
                  .map(function(p) { return '/base/'+p;});
 
-console.log(builtPaths);
-
 __karma__.loaded = function () { };
 
 function isJsFile(path) {
@@ -35,12 +33,13 @@ var allSpecFiles = Object.keys(window.__karma__.files)
   .filter(isSpecFile)
   .filter(isBuiltFile);
 
-console.log(allSpecFiles);
-
 System.config({
   baseURL: 'base',
   // Extend usual application package list with test folder
   packages: { 'testing': { main: 'index.js', defaultExtension: 'js' } },
+  meta: {
+    'build/client/app/*': { format: 'register' }
+  },
 
   // Assume npm: is set in `paths` in systemjs.config
   // Map the angular testing umd bundles
