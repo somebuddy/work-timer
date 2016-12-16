@@ -7,4 +7,11 @@ describe('Time Interval', () => {
     const interval = new TimeInterval();
     expect(interval.isUseful).toBe(true);
   });
+
+  it('should be started', () => {
+    const interval = new TimeInterval();
+    interval.start();
+    expect(interval.startedAt).not.toBeNull();
+    console.log(interval.startedAt);
+  })
 });

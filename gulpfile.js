@@ -4,6 +4,8 @@ var del = require("del");
 var browserSync = require('browser-sync').create();
 var serveConfig = require('./configs/bs-config.js');
 
+var karmaServer = require('karma').Server;
+
 var excluded_files = [
   '!./node_modules/*',
   '!./.c9/*',
@@ -76,13 +78,21 @@ gulp.task('build:css', ['build:styles:clean'], function() {
 
 gulp.task('build:styles', ['build:styles:clean', 'build:sass', 'build:css']);
 
+// Test tasks
+gulp.task('test:scripts', ['build:scripts'], function(done) {
+  new karmaServer({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: true,
+  }, done).start();
+});
+
 // Watch tasks
-gulp.task('watch:scripts', ['build:scripts'], browserSync.reload);
+gulp.task('watch:scripts', ['build:scripts', 'test:scripts'], browserSync.reload);
 gulp.task('watch:templates', ['build:templates'], browserSync.reload);
 gulp.task('watch:styles', ['build:styles'], browserSync.reload);
 
 // Main tasks
-gulp.task("serve", ['build:templates', 'build:scripts', 'build:styles'], function() {
+gulp.task("serve", ['build:templates', 'build:scripts', 'build:styles', 'test:scripts'], function() {
   browserSync.init(serveConfig);
   gulp.watch(tsFiles, ['watch:scripts']);
   gulp.watch(jsFiles, ['watch:scripts']);
@@ -92,13 +102,6 @@ gulp.task("serve", ['build:templates', 'build:scripts', 'build:styles'], functio
 });
 
 // Tests
-var Server = require('karma').Server;
-
-gulp.task("test", ['build:templates', 'build:scripts', 'build:styles'], function(done) {
-  new Server({
-    configFile: __dirname + '/karma.conf.js',
-    singleRun: true,
-  }, done).start();
-});
+gulp.task("test", ['build:templates', 'build:scripts', 'build:styles', 'test:scripts']);
 
 gulp.task("default", ['serve']);
