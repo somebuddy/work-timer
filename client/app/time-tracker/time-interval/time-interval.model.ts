@@ -5,9 +5,9 @@ export class TimeInterval {
   protected _finishedAt: Date;
   private deletedAt: Date;
 
-  constructor(start: Date = null, end?: Date) {
-    this._startedAt = start;
-    this._finishedAt = end;
+  constructor(start: Date = null, end: Date = null) {
+    this._startedAt = start? new Date(start): null;
+    this._finishedAt = end? new Date(end): null;
   }
 
   get startedAt(): Date {
@@ -15,7 +15,7 @@ export class TimeInterval {
   }
 
   set startedAt(start: Date) {
-    this._startedAt = start;
+    this._startedAt = new Date(start);
   };
 
   get finishedAt(): Date {
@@ -23,7 +23,7 @@ export class TimeInterval {
   };
 
   set finishedAt(end: Date) {
-    this._finishedAt = end;
+    this._finishedAt = new Date(end);
   };
 
   get totalTime(): number {

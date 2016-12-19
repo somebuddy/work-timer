@@ -106,7 +106,11 @@ gulp.task("serve", ['build:templates', 'build:scripts', 'build:styles', 'test:sc
 });
 
 // Tests
-gulp.task("test", ['build:templates', 'build:scripts', 'build:styles', 'test:scripts']);
+gulp.task("test", ['build:templates', 'build:scripts', 'build:styles', 'test:scripts'], function() {
+  // gulp.watch(tsFiles, ['test:scripts']);
+  // gulp.watch(jsFiles, ['test:scripts']);
+});
+
 gulp.task("coverage", ['test'], function() {
   var remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
 
