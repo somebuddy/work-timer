@@ -11,7 +11,7 @@ export class TimeInterval {
   }
 
   get startedAt(): Date {
-    return this._startedAt;
+    return this._startedAt? new Date(this._startedAt): null;
   }
 
   set startedAt(start: Date) {
@@ -19,7 +19,7 @@ export class TimeInterval {
   };
 
   get finishedAt(): Date {
-    return this._finishedAt;
+    return this._finishedAt? new Date(this._finishedAt): null;
   };
 
   set finishedAt(end: Date) {
@@ -32,11 +32,15 @@ export class TimeInterval {
   }
 
   public start() {
-    this._startedAt = new Date();
+    if (!this._startedAt) {
+      this._startedAt = new Date();
+    }
   }
 
   public stop() {
-    this._finishedAt = new Date();
+    if (!this._finishedAt) {
+      this._finishedAt = new Date();
+    }
   }
 
   public delete() {

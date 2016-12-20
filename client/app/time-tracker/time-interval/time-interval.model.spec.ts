@@ -42,24 +42,37 @@ describe('Time Interval', () => {
     });
   });
 
-  describe('start and finish setters', () => {
+  describe('startedAt property', () => {
+    var start: Date;
+
+    beforeEach(() => {
+      interval = new TimeInterval();
+      start = new Date(2016, 12, 20, 12, 30, 56, 777);
+      interval.startedAt = start;
+    });
+
+    it('should set start date', () => {
+      expect(interval.startedAt.valueOf()).toBe(start.valueOf());
+    });
+
+    it('should copy start date instead of reference', () => {
+      expect(interval.startedAt).not.toBe(start);
+    });
+
+    it('should return copy of date instead of reference', () => {
+      interval.startedAt.setMinutes(33);
+      expect(interval.startedAt.valueOf()).toBe(start.valueOf());
+    });
+  });
+
+  describe('finishedAt property', () => {
     var start: Date;
     var end: Date;
 
     beforeEach(() => {
       interval = new TimeInterval();
       start = new Date(2016, 12, 20);
-      end = new Date(2016, 12, 21);
-    });
-
-    it('should set start date', () => {
-      interval.startedAt = start;
-      expect(interval.startedAt.valueOf()).toBe(start.valueOf());
-    });
-
-    it('should copy start date instead of reference', () => {
-      interval.startedAt = start;
-      expect(interval.startedAt).not.toBe(start);
+      end = new Date(2016, 12, 21, 13, 30);
     });
 
     it('should set finish date', () => {
@@ -72,8 +85,13 @@ describe('Time Interval', () => {
       expect(interval.finishedAt).not.toBe(end);
     });
 
-    xit('should not set finish if not started', () => {
+    it('should return copy of date instead of reference', () => {
+      interval.finishedAt = end;
+      interval.finishedAt.setMinutes(33);
+      expect(interval.finishedAt.valueOf()).toBe(end.valueOf());
+    });
 
+    xit('should not set finish if not started', () => {
     });
 
     xit('should not set finish if before started', () => {
@@ -87,11 +105,5 @@ describe('Time Interval', () => {
     xit('should not set started to null or undefined', () => {
 
     });
-  })
-
-  it('should be started', () => {
-    const interval = new TimeInterval();
-    interval.start();
-    expect(interval.startedAt).not.toBeNull();
   });
 });
