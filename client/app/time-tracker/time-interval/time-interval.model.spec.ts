@@ -241,4 +241,77 @@ describe('Time Interval', () => {
       expect(interval.finishedAt).toBeUndefined();
     });
   });
+
+  describe('Total time', () => {
+    beforeEach(() => {
+      interval = new TimeInterval(new Date(2016, 11, 27, 10, 30), new Date(2016, 11, 27, 11));
+      jasmine.clock().mockDate(new Date(2016, 11, 27, 11, 30));
+    });
+
+    it('should be equal to the number of milliseconds between start and finish time', () => {
+      expect(interval.totalTime).toEqual(1800000);
+    });
+
+    it('should be equal 0 if not started', () => {
+      interval.finishedAt = undefined;
+      interval.startedAt = undefined;
+      expect(interval.totalTime).toEqual(0);
+    });
+
+    it('should be equal to the number of ms between start and now if not finished', () => {
+      interval.finishedAt = undefined;
+      expect(interval.totalTime).toEqual(3600000);
+    });
+  });
+
+  describe('Useful time', () => {
+    beforeEach(() => {
+      interval = new TimeInterval(new Date(2016, 11, 27, 10, 30), new Date(2016, 11, 27, 11));
+    });
+
+    it('should be equal to the length of interval if useful', () => {
+      expect(interval.usefulTime).toEqual(1800000);
+    });
+
+    it('should be equal to zero if not useful', () => {
+      interval.isUseful = false;
+      expect(interval.usefulTime).toEqual(0);
+    });
+  });
+
+  describe('Delete method', () => {
+    beforeEach(() => {
+      interval = new TimeInterval();
+      jasmine.clock().mockDate(new Date(2016, 11, 27));
+    });
+
+    it('should mark the object as deleted', () => {
+      expect(interval.isDeleted).toEqual(false);
+      interval.delete();
+      expect(interval.isDeleted).toEqual(true);
+    });
+
+    it('should set current time to deletedAt', () => {
+      interval.delete();
+      expect(interval.deletedAt).toEqual(new Date(2016, 11, 27));
+    });
+  });
+
+  describe('Restore methods', () => {
+    beforeEach(() => {
+      interval = new TimeInterval();
+      jasmine.clock().mockDate(new Date(2016, 11, 27));
+      interval.delete();
+    });
+
+    it('should unset mark as deleted', () => {
+      interval.restore();
+      expect(interval.isDeleted).toEqual(false);
+    });
+
+    it('should unset deletedAt property', () => {
+      interval.restore();
+      expect(interval.deletedAt).toBeUndefined();
+    });
+  });
 });

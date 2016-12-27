@@ -3,7 +3,7 @@ export class TimeInterval {
   public comment: string;
   protected _startedAt: Date;
   protected _finishedAt: Date;
-  private deletedAt: Date;
+  private _deletedAt: Date;
 
   constructor(start?: Date, end?: Date) {
     if (start) {
@@ -48,8 +48,12 @@ export class TimeInterval {
 
   get totalTime(): number {
     return (this._finishedAt ? this._finishedAt.valueOf() : Date.now())
-      - (this._startedAt ? this._startedAt.valueOf() : Date.now());
-  }
+       - (this._startedAt ? this._startedAt.valueOf() : Date.now());
+  };
+
+  get usefulTime(): number {
+    return this.isUseful? this.totalTime: 0;
+  };
 
   public start() {
     if (!this.startedAt) {
@@ -64,14 +68,18 @@ export class TimeInterval {
   }
 
   public delete() {
-    this.deletedAt = new Date();
+    this._deletedAt = new Date();
   };
 
   public restore() {
-    this.deletedAt = null;
+    this._deletedAt = undefined;
   };
 
-  get isDeleted() {
+  get deletedAt(): Date {
+    return this._deletedAt;
+  };
+
+  get isDeleted():boolean {
     return !!this.deletedAt;
-  }
+  };
 };
