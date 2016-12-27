@@ -52,14 +52,14 @@ export class TimeInterval {
   }
 
   public start() {
-    if (!this._startedAt) {
-      this._startedAt = new Date();
+    if (!this.startedAt) {
+      this.startedAt = new Date();
     }
-  }
+  };
 
   public stop() {
-    if (!this._finishedAt) {
-      this._finishedAt = new Date();
+    if (!this.finishedAt && this.startedAt) {
+      this.finishedAt = new Date();
     }
   }
 

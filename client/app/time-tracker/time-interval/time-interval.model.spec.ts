@@ -188,4 +188,57 @@ describe('Time Interval', () => {
       }).toThrowError(RangeError);
     });
   });
+
+  describe('start method', () => {
+    beforeEach(() => {
+      interval = new TimeInterval();
+      jasmine.clock().mockDate(new Date(2016, 11, 20));
+    });
+
+    afterEach(() => {
+      jasmine.clock().mockDate();
+    });
+
+    it('should set start time to current time', () => {
+      interval.start();
+      expect(interval.startedAt).toEqual(new Date(2016, 11, 20));
+    });
+
+    it('should set not change start time if was started before', () => {
+      interval.startedAt = new Date(2016, 11, 19);
+      interval.start();
+      expect(interval.startedAt).toEqual(new Date(2016, 11, 19));
+    });
+  });
+
+  describe('stop method', () => {
+    beforeEach(() => {
+      interval = new TimeInterval();
+      jasmine.clock().mockDate(new Date(2016, 11, 20));
+      interval.startedAt = new Date(2016, 11, 18);
+    });
+
+    afterEach(() => {
+      jasmine.clock().mockDate();
+    });
+
+    it('should set finish to current time', () => {
+      interval.stop();
+      expect(interval.finishedAt).toEqual(new Date(2016, 11, 20));
+    });
+
+    it('should not change time if was finished before', () => {
+      interval.finishedAt = new Date(2016, 11, 19);
+      interval.stop();
+      expect(interval.finishedAt).toEqual(new Date(2016, 11, 19));
+    });
+
+    it('should not change time if wasn\'t started', () => {
+      interval.startedAt = undefined;
+      expect(() => {
+        interval.stop();
+      }).not.toThrowError();
+      expect(interval.finishedAt).toBeUndefined();
+    });
+  });
 });
