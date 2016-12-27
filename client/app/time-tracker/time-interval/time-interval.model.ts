@@ -5,25 +5,45 @@ export class TimeInterval {
   protected _finishedAt: Date;
   private deletedAt: Date;
 
-  constructor(start: Date = null, end: Date = null) {
-    this._startedAt = start? new Date(start): null;
-    this._finishedAt = end? new Date(end): null;
+  constructor(start?: Date, end?: Date) {
+    if (start) {
+      this.startedAt = new Date(start);
+      this.finishedAt = end? new Date(end): undefined;
+    }
   }
 
   get startedAt(): Date {
-    return this._startedAt? new Date(this._startedAt): null;
+    return this._startedAt? new Date(this._startedAt): undefined;
   }
 
   set startedAt(start: Date) {
-    this._startedAt = new Date(start);
+    if (start && (start.valueOf() > Date.now())) {
+      throw new RangeError('Can\' set start time greater than current time');
+    }
+    if (start && this._finishedAt && (start.valueOf() >= this._finishedAt.valueOf())) {
+      throw new RangeError('Can\' set start time greater or equal finish time');
+    }
+    if (!start && this._finishedAt) {
+      throw new RangeError('Can\' reset start time for finished interval');
+    }
+    this._startedAt = start? new Date(start): undefined;
   };
 
   get finishedAt(): Date {
-    return this._finishedAt? new Date(this._finishedAt): null;
+    return this._finishedAt? new Date(this._finishedAt): undefined;
   };
 
   set finishedAt(end: Date) {
-    this._finishedAt = new Date(end);
+    if (end && (end.valueOf() > Date.now())) {
+      throw new RangeError('Can\' set finish time greater than current time');
+    }
+    if (end && this._startedAt && (end.valueOf() <= this._startedAt.valueOf())) {
+      throw new RangeError('Can\' set finish time less or equal start time');
+    }
+    if (end && !this._startedAt) {
+      throw new RangeError('Can\' set finish time for not started interval');
+    }
+    this._finishedAt = end? new Date(end): undefined;
   };
 
   get totalTime(): number {
