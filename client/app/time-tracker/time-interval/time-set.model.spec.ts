@@ -151,12 +151,48 @@ describe('Time Interval', () => {
   describe('pause method', () => {
     beforeEach(() => {
       ts = new TimeSet();
-    })
+      jasmine.clock().mockDate(new Date(2016,11,20));
+      ts.start();
+      jasmine.clock().mockDate(new Date(2016,11,21));
+    });
 
-    xit('should call add method', () => {
+    afterEach(() => {
+      jasmine.clock().mockDate();
+    });
+
+    it('should stop current interval', () => {
+      let current = ts.current;
+      ts.pause();
+      expect(current.finishedAt).toEqual(new Date(2016, 11, 21));
+    });
+
+    it('should add new sub', () => {
+      ts.pause();
+      expect(ts.subs.length).toEqual(1);
+    });
+
+    it('should not add new sub if no current', () => {
+      ts = new TimeSet();
+      ts.pause();
+      expect(ts.subs.length).toEqual(0);
+    });
+
+    it('should not add new sub on second call', () => {
+      ts.pause();
+      ts.pause();
+      expect(ts.subs.length).toEqual(1);
+    });
+
+    it('should call add method with current as parameter', () => {
+      let current = ts.current;
       spyOn(ts, 'add');
       ts.pause();
-      expect(ts.add).toHaveBeenCalled();
-    })
+      expect(ts.add).toHaveBeenCalledWith(current);
+    });
+
+    it('should reset current', () => {
+      ts.pause();
+      expect(ts.current).toBeUndefined();
+    });
   });
 });
