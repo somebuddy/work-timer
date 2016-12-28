@@ -91,6 +91,16 @@ describe('Time Interval', () => {
     });
   });
 
+  describe('finished time set creation', () => {
+    it('should add new interval with full length', () => {
+      ts = new TimeSet(new Date(2016, 11, 26), new Date(2016, 11, 27));
+      expect(ts.subs.length).toEqual(1);
+
+      let ti = new TimeInterval(new Date(2016, 11, 26), new Date(2016, 11, 27));
+      expect(ts.subs).toEqual(jasmine.arrayContaining([ti]));
+    });
+  });
+
   describe('pause method', () => {
     beforeEach(() => {
       ts = new TimeSet();

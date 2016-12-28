@@ -4,6 +4,13 @@ export class TimeSet extends TimeInterval {
   private _current: TimeInterval;
   private _subs: TimeInterval[] = [];
 
+  constructor(start?: Date, end?: Date) {
+    super(start, end);
+    if (start && end) {
+      this.add(start, end);
+    }
+  }
+
   get subs(): TimeInterval[] {
     return this._subs;
   };
