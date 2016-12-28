@@ -59,4 +59,9 @@ export class TimeSet extends TimeInterval {
       this._current = undefined;
     }
   };
+
+  public stop() {
+    this.pause();
+    super.stop();
+  };
 };

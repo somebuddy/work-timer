@@ -195,4 +195,32 @@ describe('Time Interval', () => {
       expect(ts.current).toBeUndefined();
     });
   });
+
+  describe('stop method', () => {
+    beforeEach(() => {
+      ts = new TimeSet();
+      jasmine.clock().mockDate(new Date(2016,11,20));
+      ts.start();
+      jasmine.clock().mockDate(new Date(2016,11,21));
+    });
+
+    afterEach(() => {
+      jasmine.clock().mockDate();
+    });
+
+    it('should call pause method', () => {
+      spyOn(ts, 'pause');
+      ts.stop();
+      expect(ts.pause).toHaveBeenCalled();
+    });
+
+    it('should set finish time', () => {
+      ts.stop();
+      expect(ts.finishedAt).toEqual(new Date(2016, 11, 21));
+    })
+  });
+
+  describe('start-pause-stop workflow', () => {
+
+  });
 });
