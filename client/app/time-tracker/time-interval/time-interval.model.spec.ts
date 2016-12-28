@@ -304,6 +304,10 @@ describe('Time Interval', () => {
       interval.delete();
     });
 
+    afterEach(() => {
+      jasmine.clock().mockDate();
+    });
+
     it('should unset mark as deleted', () => {
       interval.restore();
       expect(interval.isDeleted).toEqual(false);
