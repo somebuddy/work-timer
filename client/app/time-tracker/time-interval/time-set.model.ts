@@ -15,6 +15,10 @@ export class TimeSet extends TimeInterval {
     return this._subs;
   };
 
+  get current(): TimeInterval {
+    return this._current;
+  }
+
   public add(start: Date, end: Date): void;
   public add(ti: TimeInterval): void;
   public add(start: TimeInterval | Date, end?: Date): void {
@@ -38,6 +42,14 @@ export class TimeSet extends TimeInterval {
       this.finishedAt = ti.finishedAt;
     }
     this._subs.push(ti);
+  };
+
+  public start() {
+    if (!this._current && !this.finishedAt) {
+      this._current = new TimeInterval();
+      this._current.start();
+      super.start();
+    }
   };
 
   public pause() {
