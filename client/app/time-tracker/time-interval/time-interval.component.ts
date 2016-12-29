@@ -5,6 +5,7 @@ import { TimeInterval } from './time-interval.model';
 @Component({
   selector: 'time-interval',
   template: `
+    <div>Time interval</div>
     <div *ngIf="record">
       <span class="start">{{ record.startedAt | date:'medium'}}</span>
       <span> - </span>
@@ -23,7 +24,7 @@ import { TimeInterval } from './time-interval.model';
       </label>
       <span style="color:red; font-weight: 900"
         *ngIf="record.isDeleted">
-        (deleted:
+        (deleted: {{ record.deletedAt | date: 'medium' }}
           <button style="color: red"
             (click)="restoreRecord()">restore</button>
         )
