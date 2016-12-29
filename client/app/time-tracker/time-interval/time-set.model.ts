@@ -9,7 +9,7 @@ export class TimeSet extends TimeInterval {
     if (start && end) {
       this.add(start, end);
     }
-  }
+  };
 
   get subs(): TimeInterval[] {
     return this._subs;
@@ -17,23 +17,15 @@ export class TimeSet extends TimeInterval {
 
   get current(): TimeInterval {
     return this._current;
-  }
+  };
 
   public add(start: Date, end: Date): void;
   public add(ti: TimeInterval): void;
   public add(start: TimeInterval | Date, end?: Date): void {
     let ti: TimeInterval;
-    if (start instanceof Date) {
-      ti = new TimeInterval(start, end);
-    } else {
-      ti = start;
-    }
-
-    if (!ti.startedAt) {
-      throw new RangeError('time interval in time set must be started');
-    }
+    ti = start instanceof Date? new TimeInterval(start, end): start;
     if (!ti.finishedAt) {
-      throw new RangeError('time interval in time set must be finished');
+      throw new RangeError('time interval in time set must be complete (started and finished)');
     }
     if (!this.startedAt || this.startedAt.valueOf() > ti.startedAt.valueOf()) {
       this.startedAt = ti.startedAt;
@@ -45,7 +37,7 @@ export class TimeSet extends TimeInterval {
   };
 
   public start() {
-    if (!this._current && !this.finishedAt) {
+    if (!this.current && !this.finishedAt) {
       this._current = new TimeInterval();
       this._current.start();
       super.start();
