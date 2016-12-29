@@ -221,6 +221,114 @@ describe('Time Interval', () => {
   });
 
   describe('start-pause-stop workflow', () => {
+    beforeEach(() => {
+      ts = new TimeSet();
+      jasmine.clock().mockDate(new Date(2016,11,20));
+      ts.start();
+      jasmine.clock().mockDate(new Date(2016,11,21));
+      ts.pause();
+      jasmine.clock().mockDate(new Date(2016,11,22));
+      ts.start();
+      jasmine.clock().mockDate(new Date(2016,11,23));
+      ts.stop();
+    });
 
+    afterEach(() => {
+      jasmine.clock().mockDate();
+    });
+
+    it('should create new interval on each pause/stop', () => {
+      expect(ts.subs.length).toEqual(2);
+    });
+  });
+
+  describe('useful time counter', () => {
+    let tis: TimeInterval[];
+
+    beforeEach(() => {
+      ts = new TimeSet();
+      tis = [];
+
+      tis.push(new TimeInterval(
+        new Date(2016, 11, 20, 12, 30),
+        new Date(2016, 11, 20, 12, 31)
+      ));
+
+      tis.push(new TimeInterval(
+        new Date(2016, 11, 20, 12, 32),
+        new Date(2016, 11, 20, 12, 34)
+      ));
+
+      tis.push(new TimeInterval(
+        new Date(2016, 11, 20, 12, 35),
+        new Date(2016, 11, 20, 12, 40)
+      ));
+
+      jasmine.clock().mockDate(new Date(2016,11,21));
+    });
+
+    afterEach(() => {
+      jasmine.clock().mockDate();
+    });
+
+    it('should return subs length sum', () => {
+      expect(ts.usefulTime).toEqual(0);
+      ts.add(tis[0]);
+      expect(ts.usefulTime).toEqual(60000);
+      ts.add(tis[1]);
+      expect(ts.usefulTime).toEqual(180000);
+      ts.add(tis[2]);
+      expect(ts.usefulTime).toEqual(480000);
+    });
+
+    it('should ignore not useful subs', () => {
+      expect(ts.usefulTime).toEqual(0);
+      ts.add(tis[0]);
+      expect(ts.usefulTime).toEqual(60000);
+      tis[1].isUseful = false;
+      ts.add(tis[1]);
+      expect(ts.usefulTime).toEqual(60000);
+      ts.add(tis[2]);
+      expect(ts.usefulTime).toEqual(360000);
+    });
+
+    it('should ignore deleted intervals', () => {
+      expect(ts.usefulTime).toEqual(0);
+      ts.add(tis[0]);
+      expect(ts.usefulTime).toEqual(60000);
+      tis[1].delete();
+      ts.add(tis[1]);
+      expect(ts.usefulTime).toEqual(60000);
+      ts.add(tis[2]);
+      expect(ts.usefulTime).toEqual(360000);
+    });
+
+    it('should add current interval time', () => {
+      ts.start()
+      jasmine.clock().mockDate(new Date(2016,11,21, 0, 0, 25));
+      expect(ts.usefulTime).toEqual(25000);
+      ts.add(tis[0]);
+      expect(ts.usefulTime).toEqual(85000);
+      ts.current.isUseful = false;
+      expect(ts.usefulTime).toEqual(60000);
+    });
+
+    it('should return 0 if not useful', () => {
+      ts.add(tis[0]);
+      ts.add(tis[1]);
+      ts.isUseful = false;
+      expect(ts.usefulTime).toEqual(0);
+    });
+
+    it('efficiency getter should return part of usefult time in total', () => {
+      expect(ts.efficiency).toEqual(0);
+      ts.add(tis[0]);
+      jasmine.clock().mockDate(new Date(2016, 11, 20, 12, 31));
+      expect(ts.efficiency).toEqual(1);
+      jasmine.clock().mockDate(new Date(2016, 11, 20, 12, 32));
+      expect(ts.efficiency).toEqual(.5);
+      jasmine.clock().mockDate(new Date(2016, 11, 20, 12, 29));
+      expect(ts.efficiency).toEqual(0);
+    });
   });
 });

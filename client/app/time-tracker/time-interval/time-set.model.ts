@@ -64,4 +64,18 @@ export class TimeSet extends TimeInterval {
     this.pause();
     super.stop();
   };
+
+  get usefulTime(): number {
+    if (this.isUseful) {
+      return (this.current ? this.current.usefulTime : 0) +
+        this._subs
+          .filter(v => !v.isDeleted)
+          .reduce((s, e) => s + e.usefulTime, 0);
+    }
+    return 0;
+  };
+
+  get efficiency(): number {
+    return this.totalTime > 0? this.usefulTime / this.totalTime : 0;
+  };
 };
