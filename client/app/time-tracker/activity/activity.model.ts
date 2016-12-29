@@ -1,65 +1,5 @@
 import { TimeInterval } from '../time-interval/time-interval.model';
-
-export class ActivityRecord extends TimeInterval {
-  private _current: TimeInterval;
-  private _history: TimeInterval[] = [];
-  private _fixedTime: number = 0;
-
-  constructor(start: Date = new Date(), end?: Date) {
-    super(start, end);
-  };
-
-  public start() {
-    if (!this.startedAt) {
-      super.start();
-    }
-    this.resume();
-  };
-
-  public pause() {
-    if (this._current) {
-      this._current.stop();
-      this._history.push(this._current);
-      this._fixedTime = this._history.reduce((s, i) => s + (i.isUseful && !i.isDeleted? i.totalTime : 0), 0);
-      this._current = null;
-    }
-  };
-
-  public resume() {
-    if (!this._current) {
-      this._current = new TimeInterval();
-      this._current.start();
-    }
-  };
-
-  public stop() {
-    this.pause();
-    super.stop();
-  };
-
-  get totalTime(): number {
-    return this._fixedTime + this.currentTime;
-  };
-
-  get currentTime(): number {
-    return this._current? this._current.totalTime : 0;
-  };
-
-  get isActive(): boolean {
-    return !!this._current;
-  }
-
-  get efficiency(): number {
-    let start = this._startedAt ? this._startedAt.valueOf() : Date.now();
-    let end = this._finishedAt? this._finishedAt.valueOf() : Date.now();
-    let runtime = end - start;
-    return runtime > 0? this.totalTime / runtime : 0;
-  }
-
-  get history(): TimeInterval[] {
-    return this._history;
-  };
-};
+import { TimeSet } from '../time-interval/time-set.model';
 
 export enum ActivityStateType {
   done,
@@ -103,8 +43,8 @@ export class Activity {
   public title: string;
   public state: ActivityState = {};
   private fixedTime: number = 0;
-  private current: ActivityRecord;
-  private _history: ActivityRecord[] = [];
+  private current: TimeSet;
+  private _history: TimeSet[] = [];
 
   constructor(title: string) {
     this.title = title;
@@ -115,7 +55,7 @@ export class Activity {
   }
 
   get currentTime(): number {
-    return this.current? this.current.totalTime : 0;
+    return this.current? this.current.usefulTime : 0;
   };
 
   get totalTime(): number {
@@ -127,12 +67,10 @@ export class Activity {
   };
 
   public start(): void {
-    if (this.current) {
-      this.current.resume();
-    } else {
-      this.current = new ActivityRecord();
-      this.current.start();
+    if (!this.current) {
+      this.current = new TimeSet();
     }
+    this.current.start();
   };
 
   public pause(): void {
@@ -145,7 +83,7 @@ export class Activity {
     if (this.current) {
       this.current.stop();
       this._history.push(this.current);
-      this.fixedTime = this._history.reduce((s, i) => s + (i.isUseful && !i.isDeleted? i.totalTime : 0), 0);
+      this.fixedTime = this._history.reduce((s, i) => s + (!i.isDeleted? i.usefulTime : 0), 0);
       this.current = null;
     }
   };
@@ -164,18 +102,18 @@ export class Activity {
   };
 
   get isRunning(): boolean {
-    return this.isActive && this.current.isActive;
+    return this.isActive && !!this.current.current;
   }
 
-  get historyRecords(): ActivityRecord[] {
+  get historyRecords(): TimeSet[] {
     return this._history;
   };
 
-  get currentRecord(): ActivityRecord {
+  get currentRecord(): TimeSet {
     return this.current;
   }
 
   get currentIntervals(): TimeInterval[] {
-    return this.current? this.current.history : [];
+    return this.current? this.current.subs : [];
   };
 };

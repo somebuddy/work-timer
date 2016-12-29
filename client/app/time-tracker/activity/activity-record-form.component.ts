@@ -1,9 +1,8 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-
-import { ActivityRecord } from './activity.model';
+import { TimeSet } from '../time-interval/time-set.model';
 
 @Component({
-  selector: 'activity-record-form',
+  selector: 'time-set-form',
   template: `
     <form (ngSubmit)="onSubmit()" #newRecordForm="ngForm">
       <div>
@@ -29,17 +28,17 @@ import { ActivityRecord } from './activity.model';
     </form>
   `
 })
-export class ActivityRecordFormComponent {
+export class TimeSetFormComponent {
   @Output()
-  onCreated = new EventEmitter<ActivityRecord>();
+  onCreated = new EventEmitter<TimeSet>();
 
-  public newRecord: ActivityRecord = new ActivityRecord();
+  public newRecord: TimeSet = new TimeSet();
 
 
   public onSubmit() {
     this.newRecord.startedAt = new Date(this.newRecord.startedAt);
     this.newRecord.finishedAt = new Date(this.newRecord.finishedAt);
     this.onCreated.emit(this.newRecord);
-    this.newRecord = new ActivityRecord();
+    this.newRecord = new TimeSet();
   };
 };

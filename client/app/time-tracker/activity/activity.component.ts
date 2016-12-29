@@ -2,7 +2,8 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, SimpleCha
 
 import { Observable } from 'rxjs/Rx';
 
-import { Activity, ActivityRecord } from './activity.model';
+import { Activity } from './activity.model';
+import { TimeSet } from '../time-interval/time-set.model';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -11,10 +12,9 @@ import { Activity, ActivityRecord } from './activity.model';
     <div *ngIf="activity" class="activity"
       [class.done]="activity.isDone">
       <span class="title">{{ activity.title }}</span>
-      <span class="time current">
+      <span class="time current" *ngIf="activity.isActive">
         {{ activity.currentTime | time }}
-        <a *ngIf="activity.isActive"
-          (click)="toggleCurrentDetails()">
+        <a (click)="toggleCurrentDetails()">
           ({{ activity.currentIntervals.length }} intervals)
         </a>
       </span>
@@ -51,7 +51,7 @@ import { Activity, ActivityRecord } from './activity.model';
 
       <section class="add-record" *ngIf="addRecordFormVisible">
         <header>Add previous time interval</header>
-        <activity-record-form (onCreated)="addNewRecord($event)"></activity-record-form>
+        <time-set-form (onCreated)="addNewRecord($event)"></time-set-form>
       </section>
 
       <section class="history" *ngIf="activity.currentIntervals && currentDetailsVisible">
@@ -154,7 +154,7 @@ export class ActivityComponent {
     this.addRecordFormVisible = !this.addRecordFormVisible;
   };
 
-  public addNewRecord(record: ActivityRecord) {
+  public addNewRecord(record: TimeSet) {
     this.activity.historyRecords.push(record);
   };
 
