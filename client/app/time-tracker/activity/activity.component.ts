@@ -46,7 +46,7 @@ import { TimeSet } from '../time-interval/time-set.model';
 
       <section class="history" *ngIf="activity.historyRecords && historyDisplayed">
         <header>Previous records</header>
-        <time-interval *ngFor="let record of activity.historyRecords" [record]="record"></time-interval>
+        <time-interval *ngFor="let record of activity.historyRecords" [slot]="record"></time-interval>
       </section>
 
       <section class="add-record" *ngIf="addRecordFormVisible">
@@ -56,7 +56,7 @@ import { TimeSet } from '../time-interval/time-set.model';
 
       <section class="history" *ngIf="activity.currentIntervals && currentDetailsVisible">
         <header>Current Intervals</header>
-        <time-interval *ngFor="let record of activity.currentIntervals" [record]="record"></time-interval>
+        <time-interval *ngFor="let record of activity.currentIntervals" [slot]="record"></time-interval>
       </section>
     </div>
   `,

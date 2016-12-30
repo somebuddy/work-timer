@@ -218,26 +218,31 @@ describe('TimeIntervalComponent', () => {
       beforeEach(() => {
         de = fixture.debugElement.query(By.css('.time-slot'));
         el = de.nativeElement;
+        ti.isUseful = false;
+        ti.delete();
+        fixture.detectChanges();
       });
 
-      xit('should have delete class if deleted', () => {
-
+      it('should have delete class if deleted', () => {
+        expect(el.className).toContain('deleted');
       });
 
-      xit('should have useful class if useful', () => {
-
+      it('should not have delete class if not deleted', () => {
+        ti.restore();
+        fixture.detectChanges();
+        expect(el.className).not.toContain('deleted');
       });
 
-      xit('should not have delete class if not deleted', () => {
-
+      it('should have useful class if useful', () => {
+        ti.isUseful = true;
+        fixture.detectChanges();
+        expect(el.className).toContain('useful');
       });
 
-      xit('should change deleted class on model change', () => {
-
-      });
-
-      xit('should change useful class on model change', () => {
-
+      it('should change useful class on model change', () => {
+        ti.isUseful = false;
+        fixture.detectChanges();
+        expect(el.className).not.toContain('useful');
       });
     });
   });

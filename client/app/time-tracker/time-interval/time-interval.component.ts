@@ -5,7 +5,10 @@ import { TimeInterval } from './time-interval.model';
 @Component({
   selector: 'time-interval',
   template:`
-    <div class="time-slot" *ngIf="slot">
+    <div class="time-slot"
+      *ngIf="slot"
+      [class.deleted]="slot.isDeleted"
+      [class.useful]="slot.isUseful">
       <div class="useful-checker" [class.checked]="slot.isUseful"></div>
       <div class="period"></div>
       <div class="comment"></div>
