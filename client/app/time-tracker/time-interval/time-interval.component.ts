@@ -4,9 +4,14 @@ import { TimeInterval } from './time-interval.model';
 
 @Component({
   selector: 'time-interval',
-  template: `
-    <div>Time interval</div>
-    <div *ngIf="record">
+  template:`
+    <div class="time-slot" *ngIf="slot">
+      <div class="useful-checker" [class.checked]="slot.isUseful"></div>
+      <div class="period"></div>
+      <div class="comment"></div>
+      <div class="timer"></div>
+      <div class="actions"></div>
+      <!--
       <span class="start">{{ record.startedAt | date:'medium'}}</span>
       <span> - </span>
       <span class="end">{{ record.finishedAt | date:'medium'}}</span>
@@ -34,6 +39,7 @@ import { TimeInterval } from './time-interval.model';
         (click)="deleteRecord()">
         Delete
       </button>
+      -->
     </div>
   `,
   styles: [`
@@ -42,6 +48,9 @@ import { TimeInterval } from './time-interval.model';
 export class TimeIntervalComponent {
   @Input()
   public record: TimeInterval;
+
+  @Input()
+  public slot: TimeInterval;
 
   public deleteRecord() {
     this.record.delete();
