@@ -189,28 +189,46 @@ describe('TimeIntervalComponent', () => {
         ).toBe(1);
       });
 
-      xit('should have delete button', () => {
-
+      it('should have delete button', () => {
+        de = de.query(By.css('.btn.delete'));
+        expect(de).not.toBeNull();
       });
 
-      xit('should not have delete button if deleted', () => {
+      it('should not have delete button if deleted', () => {
+        ti.delete();
+        fixture.detectChanges();
 
+        de = de.query(By.css('.btn.delete'));
+        expect(de).toBeNull();
       });
 
-      xit('should have restore button if deleted', () => {
-
+      it('should call delete method on delete button click', () => {
+        de = de.query(By.css('.btn.delete'));
+        de.triggerEventHandler('click', null);
+        expect(ti.isDeleted).toBe(true);
       });
 
-      xit('should not have restore button if not deleted', () => {
+      it('should have restore button if deleted', () => {
+        ti.delete();
+        fixture.detectChanges();
 
+        de = de.query(By.css('.btn.restore'));
+        expect(de).not.toBeNull();
       });
 
-      xit('should call delete method on delete button click', () => {
-
+      it('should not have restore button if not deleted', () => {
+        de = de.query(By.css('.btn.restore'));
+        expect(de).toBeNull();
       });
 
-      xit('should call restore method on restore button click', () => {
+      it('should call restore method on restore button click', () => {
+        ti.delete();
+        fixture.detectChanges();
+        expect(ti.isDeleted).toBe(true);
 
+        de = de.query(By.css('.btn.restore'));
+        de.triggerEventHandler('click', null);
+        expect(ti.isDeleted).toBe(false);
       });
     });
 

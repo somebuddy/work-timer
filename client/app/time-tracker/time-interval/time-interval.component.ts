@@ -13,7 +13,10 @@ import { TimeInterval } from './time-interval.model';
       <div class="period"></div>
       <div class="comment"></div>
       <div class="timer"></div>
-      <div class="actions"></div>
+      <div class="actions">
+        <button class="btn delete" *ngIf="!slot.isDeleted" (click)="slot.delete()">delete</button>
+        <button class="btn restore" *ngIf="slot.isDeleted" (click)="slot.restore()">restore</button>
+      </div>
       <!--
       <span class="start">{{ record.startedAt | date:'medium'}}</span>
       <span> - </span>
@@ -30,36 +33,16 @@ import { TimeInterval } from './time-interval.model';
         <input type="checkbox" [(ngModel)]="record.isUseful" />
         useful time
       </label>
-      <span style="color:red; font-weight: 900"
-        *ngIf="record.isDeleted">
-        (deleted: {{ record.deletedAt | date: 'medium' }}
-          <button style="color: red"
-            (click)="restoreRecord()">restore</button>
-        )
-      </span>
-      <button class="btn delete"
-        *ngIf="!record.isDeleted"
-        (click)="deleteRecord()">
-        Delete
-      </button>
       -->
     </div>
   `,
   styles: [`
+    .time-slot {
+      display: flex;
+    }
   `],
 })
 export class TimeIntervalComponent {
   @Input()
-  public record: TimeInterval;
-
-  @Input()
   public slot: TimeInterval;
-
-  public deleteRecord() {
-    this.record.delete();
-  };
-
-  public restoreRecord() {
-    this.record.restore();
-  }
 };
