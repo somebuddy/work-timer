@@ -6,11 +6,24 @@ import { TimeInterval } from './time-interval.model';
   selector: 'time-interval',
   template:`
     <div class="time-slot"
-      *ngIf="slot"
+      *ngIf="slot && slot.startedAt"
       [class.deleted]="slot.isDeleted"
       [class.useful]="slot.isUseful">
-      <div class="useful-checker" [class.checked]="slot.isUseful"></div>
-      <div class="period"></div>
+      <div class="useful-checker"
+        [class.checked]="slot.isUseful"
+        (click)="slot.isUseful = !slot.isUseful"></div>
+      <div class="period">
+        <div class="dates">
+          <div class="start">{{ slot.startedAt | date:'mediumDate' }}</div>
+          <div class="finish"
+            *ngIf="isFinishDateDisplayed()">{{ slot.finishedAt | date:'mediumDate' }}</div>
+        </div>
+
+        <div class="times">
+          <div class="start"></div>
+          <div class="finish"></div>
+        </div>
+      </div>
       <div class="comment"></div>
       <div class="timer"></div>
       <div class="actions">
@@ -29,10 +42,6 @@ import { TimeInterval } from './time-interval.model';
       </span>
       <span> - </span>
       <span class="efficiency">{{ record.efficiency | percent }}</span>
-      <label>
-        <input type="checkbox" [(ngModel)]="record.isUseful" />
-        useful time
-      </label>
       -->
     </div>
   `,
@@ -45,4 +54,15 @@ import { TimeInterval } from './time-interval.model';
 export class TimeIntervalComponent {
   @Input()
   public slot: TimeInterval;
+
+  isFinishDateDisplayed(): boolean {
+    if (this.slot && this.slot.finishedAt) {
+      let f = this.slot.finishedAt;
+      let s = this.slot.startedAt;
+      return !(f.getFullYear() === s.getFullYear() &&
+        f.getMonth() === s.getMonth() &&
+        f.getDate() === s.getDate());
+    }
+    return false;
+  }
 };

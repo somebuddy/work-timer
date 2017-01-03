@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { FormsModule }  from '@angular/forms';
 
 import { TimeIntervalComponent } from './time-interval.component';
@@ -34,23 +35,33 @@ describe('TimeIntervalComponent', () => {
     expect(de).toBeNull();
   });
 
+  it('should be empty if not started', () => {
+    comp.slot = ti;
+    fixture.detectChanges();
+    de = fixture.debugElement.query(By.css('.time-slot'));
+    expect(de).toBeNull();
+  });
+
   it('should be time-slot element with time interval', () => {
     comp.slot = ti;
+    ti.start();
     fixture.detectChanges();
     de = fixture.debugElement.query(By.css('.time-slot'));
     expect(de).not.toBeNull();
   });
 
-  xit('should be empty if not started', () => {
-
-  });
-
   describe('time slot element', () => {
     beforeEach(() => {
       comp.slot = ti;
+      jasmine.clock().mockDate(new Date(2017, 0, 2, 9, 0, 0));
+      ti.start();
       fixture.detectChanges();
       de = fixture.debugElement.query(By.css('.time-slot'));
       el = de.nativeElement;
+    });
+
+    afterEach(() => {
+      jasmine.clock().mockDate();
     });
 
     describe('useful checker', () => {
@@ -77,12 +88,20 @@ describe('TimeIntervalComponent', () => {
         expect(el.className).not.toContain('checked');
       });
 
-      xit('should toggle model isUseful by click', () => {
+      it('should toggle model isUseful by click', () => {
+        ti.isUseful = true;
+        fixture.detectChanges();
+        de.triggerEventHandler('click', null);
+        expect(ti.isUseful).toEqual(false);
 
+        de.triggerEventHandler('click', null);
+        expect(ti.isUseful).toEqual(true);
       });
     });
 
     describe('period', () => {
+      let dp = new DatePipe('en-US');
+
       beforeEach(() => {
         de = fixture.debugElement.query(By.css('.time-slot .period'));
         el = de.nativeElement;
@@ -96,20 +115,36 @@ describe('TimeIntervalComponent', () => {
         ).toBe(1);
       });
 
-      xit('should have start date', () => {
+      it('should have start date', () => {
+        de = de.query(By.css('.dates .start'));
+        expect(de).not.toBeNull();
 
+        el = de.nativeElement;
+        expect(el.textContent).toEqual(dp.transform(ti.startedAt, 'mediumDate'));
       });
 
-      xit('should have finish date', () => {
-
+      it('should not have finish date if not finished', () => {
+        de = de.query(By.css('.dates .finish'));
+        expect(de).toBeNull();
       });
 
-      xit('should not have finish date if it is equal to start date', () => {
+      it('should have finish date', () => {
+        jasmine.clock().mockDate(new Date(2017, 0, 3, 9, 10, 0));
+        ti.stop();
+        fixture.detectChanges();
+        de = de.query(By.css('.dates .finish'));
+        expect(de).not.toBeNull();
 
+        el = de.nativeElement;
+        expect(el.textContent).toEqual(dp.transform(ti.finishedAt, 'mediumDate'));
       });
 
-      xit('should not have finish date if not finished', () => {
-
+      it('should not have finish date if it is equal to start date', () => {
+        jasmine.clock().mockDate(new Date(2017, 0, 2, 9, 10, 0));
+        ti.stop();
+        fixture.detectChanges();
+        de = de.query(By.css('.dates .finish'));
+        expect(de).toBeNull();
       });
 
       xit('should have start time', () => {
