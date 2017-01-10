@@ -115,7 +115,7 @@ describe('TimeIntervalComponent', () => {
         ).toBe(1);
       });
 
-      it('should have start date', () => {
+      it('should display start date', () => {
         de = de.query(By.css('.dates .start'));
         expect(de).not.toBeNull();
 
@@ -123,12 +123,12 @@ describe('TimeIntervalComponent', () => {
         expect(el.textContent).toEqual(dp.transform(ti.startedAt, 'mediumDate'));
       });
 
-      it('should not have finish date if not finished', () => {
+      it('should not display finish date if not finished', () => {
         de = de.query(By.css('.dates .finish'));
         expect(de).toBeNull();
       });
 
-      it('should have finish date', () => {
+      it('should display finish date', () => {
         jasmine.clock().mockDate(new Date(2017, 0, 3, 9, 10, 0));
         ti.stop();
         fixture.detectChanges();
@@ -139,7 +139,7 @@ describe('TimeIntervalComponent', () => {
         expect(el.textContent).toEqual(dp.transform(ti.finishedAt, 'mediumDate'));
       });
 
-      it('should not have finish date if it is equal to start date', () => {
+      it('should not display finish date if it is equal to start date', () => {
         jasmine.clock().mockDate(new Date(2017, 0, 2, 9, 10, 0));
         ti.stop();
         fixture.detectChanges();
@@ -147,24 +147,48 @@ describe('TimeIntervalComponent', () => {
         expect(de).toBeNull();
       });
 
-      xit('should have start time', () => {
+      it('should display start time', () => {
+        de = de.query(By.css('.times .start'));
+        expect(de).not.toBeNull();
 
+        el = de.nativeElement;
+        expect(el.textContent).toEqual(dp.transform(ti.startedAt, 'mediumTime'));
       });
 
-      xit('should have finish time', () => {
+      it('should display finish time', () => {
+        jasmine.clock().mockDate(new Date(2017, 0, 3, 9, 10, 0));
+        ti.stop();
+        fixture.detectChanges();
+        de = de.query(By.css('.times .finish'));
+        expect(de).not.toBeNull();
 
+        el = de.nativeElement;
+        expect(el.textContent).toEqual(dp.transform(ti.finishedAt, 'mediumTime'));
       });
 
-      xit('should not have finish time if not finished', () => {
-
+      it('should not display finish time if not finished', () => {
+        de = de.query(By.css('.times .finish'));
+        expect(de).toBe(null);
       });
 
-      xit('should have stop button time if not finished', () => {
-
+      it('should display stop button time if not finished', () => {
+        de = de.query(By.css('.times .btn.stop'));
+        expect(de).not.toBe(null);
       });
 
-      xit('should call stop action on click stop button', () => {
+      it('should not display stop button time if finished', () => {
+        jasmine.clock().mockDate(new Date(2017, 0, 3, 9, 10, 0));
+        ti.stop();
+        fixture.detectChanges();
+        de = de.query(By.css('.times .btn.stop'));
+        expect(de).toBe(null);
+      });
 
+      it('should call stop action on click stop button', () => {
+        spyOn(ti, 'stop');
+        de = de.query(By.css('.times .btn.stop'));
+        de.triggerEventHandler('click', null);
+        expect(ti.stop).toHaveBeenCalled();
       });
     });
 
@@ -182,8 +206,12 @@ describe('TimeIntervalComponent', () => {
         ).toBe(1);
       });
 
-      xit('should display comment', () => {
+      it('should display comment', () => {
+        expect(el.textContent).toEqual('');
 
+        ti.comment = 'test comment';
+        fixture.detectChanges();
+        expect(el.textContent).toEqual('test comment');
       });
     });
 
@@ -201,12 +229,16 @@ describe('TimeIntervalComponent', () => {
         ).toBe(1);
       });
 
-      xit('should display useful time', () => {
+      it('should display useful time', () => {
+        expect(el.textContent).toEqual('0:00:00.0');
 
-      });
+        jasmine.clock().mockDate(new Date(2017, 0, 2, 9, 10, 0));
+        fixture.detectChanges();
+        expect(el.textContent).toEqual('0:10:00.0');
 
-      xit('should update useful time', () => {
-
+        jasmine.clock().mockDate(new Date(2017, 0, 3, 9, 50, 0));
+        fixture.detectChanges();
+        expect(el.textContent).toEqual('24:50:00.0');
       });
     });
 
