@@ -1,7 +1,7 @@
 import { TimeInterval } from './time-interval.model';
 import { TimeSet } from './time-set.model';
 
-describe('Time Interval', () => {
+describe('Time Set', () => {
   var ts: TimeSet;
 
   beforeEach(() => {

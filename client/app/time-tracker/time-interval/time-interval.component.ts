@@ -33,19 +33,6 @@ import { TimeInterval } from './time-interval.model';
         <button class="btn delete" *ngIf="!slot.isDeleted" (click)="slot.delete()">delete</button>
         <button class="btn restore" *ngIf="slot.isDeleted" (click)="slot.restore()">restore</button>
       </div>
-      <!--
-      <span class="start">{{ record.startedAt | date:'medium'}}</span>
-      <span> - </span>
-      <span class="end">{{ record.finishedAt | date:'medium'}}</span>
-      <span> - </span>
-      <span class="time">{{ (record.totalTime) | time }}</span>
-      <span> - </span>
-      <span class="comment">
-        <input type="text" [(ngModel)]="record.comment">
-      </span>
-      <span> - </span>
-      <span class="efficiency">{{ record.efficiency | percent }}</span>
-      -->
     </div>
   `,
   styles: [`
