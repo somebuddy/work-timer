@@ -92,7 +92,7 @@ describe('Time set widget', () => {
     });
   });
 
-  fdescribe('summary', () => {
+  describe('summary', () => {
     beforeEach(() => {
       jasmine.clock().mockDate(new Date(2017, 0, 2, 9, 0, 0));
       ts.start();
@@ -175,11 +175,16 @@ describe('Time set widget', () => {
     });
   });
 
-  describe('now', () => {
+  fdescribe('now', () => {
     beforeEach(() => {
+      jasmine.clock().mockDate(new Date(2017, 0, 2, 9, 0, 0));
       ts.start();
       fixture.detectChanges();
       de = de.query(By.css('.time-set .now'));
+    });
+
+    afterEach(() => {
+      jasmine.clock().mockDate();
     });
 
     it('should have element for now timer', () => {
@@ -198,12 +203,20 @@ describe('Time set widget', () => {
       expect(de).not.toBeNull();
     });
 
-    xit('should contain "now" if current interval exists', () => {
-
+    it('should contain "now" if current interval exists', () => {
+      de = de.query(By.css('header'));
+      el = de.nativeElement;
+      expect(el.textContent).toContain('now');
+      expect(el.textContent).not.toContain('paused');
     });
 
-    xit('should contain "paused" if current interval is not exists', () => {
-
+    it('should contain "paused" if current interval is not exists', () => {
+      ts.pause();
+      fixture.detectChanges();
+      de = de.query(By.css('header'));
+      el = de.nativeElement;
+      expect(el.textContent).toContain('paused');
+      expect(el.textContent).not.toContain('now');
     });
 
     it('should contain value.main element', () => {
